@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DryProof by Asian Paints</title>
+<meta name="description" content="DryProof by Asian Paints — independent diagnosis, certified partners, verified work and a warranty you can check.">
+<style>
+:root{--p:#4B2A7B;--p2:#6a45a3;--pl:#EFEAF7;--c:#E8483F;--cl:#FDECEC;--t:#24212b;--m:#6b6675;--b:#e4e0ea;--g:#2E9E5B;--gl:#e7f5ec;--a:#b57900;--al:#fff4db;--bg:#f6f4f9;--w:#fff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--t);background:var(--bg);overflow-x:hidden}
+a{color:var(--p)}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{line-height:1.25;margin:0 0 .4em}
+h1{font-size:1.5rem}h2{font-size:1.2rem}h3{font-size:1.02rem}
+p{margin:.3em 0 .7em}
+.top{background:var(--p);color:#fff;position:sticky;top:0;z-index:20}
+.top-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;white-space:nowrap}
+.brand b{font-size:1.15rem;letter-spacing:.2px}
+.brand small{opacity:.85;font-size:.72rem;letter-spacing:.8px;text-transform:uppercase}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--c);display:grid;place-items:center}
+.nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.nav a{color:#fff;text-decoration:none;padding:7px 11px;border-radius:8px;font-size:.92rem;white-space:nowrap}
+.nav a.on,.nav a:hover{background:rgba(255,255,255,.16)}
+.who{font-size:.82rem;opacity:.9;white-space:nowrap}
+.who button{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:7px;padding:3px 9px;margin-left:6px;font-size:.8rem}
+main{max-width:1180px;margin:0 auto;padding:22px 16px 90px}
+.card{background:var(--w);border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:16px}
+.card.soft{background:var(--pl);border-color:#ddd3ee}
+.card.warn{background:var(--al);border-color:#f0dca8}
+.card.ok{background:var(--gl);border-color:#bfe3cc}
+.card.bad{background:var(--cl);border-color:#f3c3c0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}.nav{margin-left:0;width:100%}.top-in{gap:8px}}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:10px 16px;background:var(--p);color:#fff;font-weight:600;text-decoration:none}
+.btn:hover{background:var(--p2)}
+.btn.c{background:var(--c)}.btn.c:hover{background:#d23a31}
+.btn.g{background:var(--g)}
+.btn.o{background:#fff;color:var(--p);border:1.5px solid var(--p)}
+.btn.o:hover{background:var(--pl)}
+.btn.sm{padding:6px 11px;font-size:.86rem;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{justify-content:space-between}
+.mut{color:var(--m)}
+.small{font-size:.85rem}
+.tiny{font-size:.76rem}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.76rem;font-weight:600;background:var(--pl);color:var(--p);white-space:nowrap}
+.chip.g{background:var(--gl);color:var(--g)}
+.chip.c{background:var(--cl);color:#b9302a}
+.chip.a{background:var(--al);color:var(--a)}
+.chip.k{background:#eee;color:#555}
+label.f{display:block;font-weight:600;font-size:.88rem;margin:12px 0 5px}
+.in{width:100%;padding:10px 12px;border:1.5px solid var(--b);border-radius:10px;background:#fff}
+.in:focus,.opt:focus,.btn:focus-visible{outline:3px solid #c9b6ea;outline-offset:1px}
+textarea.in{min-height:84px;resize:vertical}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1.5px solid var(--b);background:#fff;border-radius:10px;padding:9px 13px;text-align:left}
+.opt.on{border-color:var(--p);background:var(--pl);color:var(--p);font-weight:600}
+.err{color:#b9302a;font-size:.85rem;margin-top:6px}
+.phases{display:flex;gap:0;margin:6px 0 4px;overflow-x:auto}
+.ph{flex:1;min-width:92px;text-align:center;position:relative;padding-top:30px;font-size:.8rem;color:var(--m)}
+.ph:before{content:"";position:absolute;top:12px;left:0;right:0;height:3px;background:var(--b)}
+.ph:first-child:before{left:50%}.ph:last-child:before{right:50%}
+.ph i{position:absolute;top:2px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--b);font-style:normal;font-size:.72rem;display:grid;place-items:center;font-weight:700}
+.ph.done{color:var(--g)}.ph.done:before{background:var(--g)}.ph.done i{background:var(--g);border-color:var(--g);color:#fff}
+.ph.cur{color:var(--c);font-weight:700}.ph.cur i{border-color:var(--c);color:var(--c)}
+.stages{list-style:none;margin:0;padding:0}
+.stg{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--b);align-items:flex-start}
+.stg:first-child{border-top:0}
+.dot{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:.8rem;background:#eee;color:#777}
+.dot.done{background:var(--g);color:#fff}.dot.open{background:var(--c);color:#fff}.dot.redo{background:var(--a);color:#fff}
+.thumb{width:74px;height:56px;border-radius:8px;object-fit:cover;border:1px solid var(--b);background:#f0eef4;cursor:zoom-in}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--b);vertical-align:top}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.4px;color:var(--m);font-weight:700}
+.tw{overflow-x:auto}
+.kpi{background:#fff;border:1px solid var(--b);border-radius:12px;padding:14px}
+.kpi b{display:block;font-size:1.6rem;color:var(--p);line-height:1.1}
+.kpi span{font-size:.8rem;color:var(--m)}
+.bar{height:9px;border-radius:9px;background:#ece8f2;overflow:hidden}
+.bar>div{height:100%;background:var(--p)}
+.bar.c>div{background:var(--c)}
+.role{display:block;text-align:left;background:#fff;border:1.5px solid var(--b);border-radius:16px;padding:22px;width:100%}
+.role:hover{border-color:var(--p);box-shadow:0 6px 20px rgba(75,42,123,.1)}
+.role .ic{width:46px;height:46px;border-radius:12px;background:var(--pl);display:grid;place-items:center;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,var(--p),#2f1a50);color:#fff;border-radius:18px;padding:28px 26px;margin-bottom:20px}
+.hero h1{font-size:1.7rem}
+.list-item{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--b);border-radius:12px;background:#fff;margin-bottom:10px;flex-wrap:wrap}
+.cert{border:2px solid var(--p);border-radius:14px;padding:18px;background:#fff;position:relative}
+.cert .seal{position:absolute;right:16px;top:16px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#222;color:#fff;padding:11px 18px;border-radius:10px;z-index:90;max-width:92vw;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.modal-bg{position:fixed;inset:0;background:rgba(20,10,35,.55);display:grid;place-items:center;z-index:80;padding:16px}
+.modal{background:#fff;border-radius:16px;max-width:620px;width:100%;max-height:90vh;overflow:auto;padding:20px}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto;padding:4px}
+.msg{max-width:82%;padding:10px 13px;border-radius:14px;white-space:pre-line}
+.msg.u{align-self:flex-end;background:var(--p);color:#fff;border-bottom-right-radius:4px}
+.msg.b{align-self:flex-start;background:var(--pl);border-bottom-left-radius:4px}
+.demo-btn{position:fixed;right:16px;bottom:16px;z-index:70;background:#1d1726;color:#fff;border:0;border-radius:999px;padding:10px 16px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.demo{position:fixed;right:16px;bottom:66px;z-index:71;background:#1d1726;color:#fff;border-radius:14px;padding:14px;width:300px;max-width:calc(100vw - 32px);box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:.86rem}
+.demo h4{margin:8px 0 6px;font-size:.74rem;text-transform:uppercase;letter-spacing:.6px;opacity:.7}
+.demo button,.demo select{background:#342b42;color:#fff;border:0;border-radius:7px;padding:6px 9px;margin:0 4px 5px 0;font-size:.82rem}
+.demo button:hover{background:#4a3d5e}
+.qr{width:120px;height:120px;background:#fff;padding:6px;border-radius:8px;border:1px solid var(--b)}
+.illus{width:100%;border-radius:10px;border:1px solid var(--b);display:block}
+details{border:1px solid var(--b);border-radius:10px;padding:10px 14px;background:#fff;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+.flag{border-left:4px solid var(--c);background:#fff;padding:10px 12px;border-radius:8px;margin-bottom:8px}
+.flag.r{border-left-color:var(--a)}
+hr{border:0;border-top:1px solid var(--b);margin:14px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media print{.top,.demo-btn,.demo,.noprint{display:none!important}body{background:#fff}main{padding:0}.card{border:0;padding:0}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+'use strict';
+
+/* ================= CONSTANTS ================= */
+var KEY='dryproof_demo_v2';
+var MIN=60000,HR=3600000,DAY=86400000;
+var TIER={
+ 'Certified':{rate:49,disc:'7%',credit:15,ftrMin:90,rank:1},
+ 'Certified Plus':{rate:53,disc:'7.8%',credit:30,ftrMin:95,rank:2},
+ 'Master':{rate:57,disc:'8.2%',credit:45,ftrMin:98,rank:3}
+};
+var PLAN={Basic:{rate:105,years:5,flood:false},Essential:{rate:110,years:10,flood:true}};
+var STAGES=['Surface prep','Crack & joint treatment','Primer','Coat 1','Coat 2 + 72-hour cure','Final QC + 48-hour flood test'];
+var PHASES=['Diagnose','Prescribe','Execute','Verify','Assure'];
+var PEOPLE={diag:'Vikram Rao (DE-1049)',second:'Rajiv Nair (DE-2018)',qc:'Meera Kulkarni (QC-301)',claims:'Arjun Mehta (CE-512)',head:'S. Iyer, Regional Technical Head'};
+var LOCS=['Terrace','Bathroom','External wall','Basement'];
+var SYS={
+ 'Terrace':{name:'SmartCare Terrace Seal (PU system)',cause:'Hairline cracks at the parapet–slab joint and a worn-out old coating let rainwater pond and seep through the slab.',moist:34,
+  layers:['Grind, clean and dry the surface','Fill cracks and joints with elastomeric sealant + fibre mesh','Water-based PU primer','Two coats of PU waterproof membrane (1.2 mm total)'],
+  why:'Exposed terrace + cracks at joints + water ponding after rain → a flexible PU membrane that moves with daily heat.'},
+ 'Bathroom':{name:'SmartCare Wet Area Seal (cementitious system)',cause:'Grout has failed and there is no waterproof layer under the tiles in the sunken area, so water reaches the slab below.',moist:41,
+  layers:['Remove failed grout and clean the sunken area','Seal pipe collars and corner joints','Cementitious primer','Two coats of flexible cementitious membrane under the tile bed'],
+  why:'Wet area + leak below the tiles → a flexible cementitious membrane under the tile bed, sealed at pipes and corners.'},
+ 'External wall':{name:'SmartCare Exterior Wall Shield (elastomeric system)',cause:'Shrinkage cracks in the plaster and a worn paint film let wind-driven rain into the wall.',moist:28,
+  layers:['Clean and repair cracked plaster','Fill cracks with elastomeric filler','Exterior primer','Two coats of elastomeric waterproof coating'],
+  why:'Vertical wall facing driving rain + plaster cracks → an elastomeric coating that bridges cracks and sheds water.'},
+ 'Basement':{name:'SmartCare Basement Barrier (crystalline system)',cause:'Groundwater pressure is pushing water through construction joints in the retaining wall.',moist:47,
+  layers:['Remove loose plaster and clean the wall','PU injection grouting at construction joints','Two coats of crystalline waterproof slurry','Protective cementitious plaster'],
+  why:'Below-ground wall + water pressure from the soil → crystalline slurry and joint injection, not a surface paint.'},
+ 'Water tanks':{name:'SmartCare Tank Guard (food-safe cementitious system)',cause:'',moist:0,
+  layers:['Clean and open up joints','Seal joints and pipe inlets','Food-safe cementitious primer','Two coats of food-safe flexible membrane'],why:''}
+};
+var B2B_RATE={'Terrace':60,'Wet areas':40,'Basement':120,'Water tanks':35};
+var I18N={
+ en:{title:'Report a leak',where:'Where is the leak?',how:'Has this happened before?',desc:'Describe what you see',photos:'Add photos (optional)',first:'First time',recurring:'Recurring (2+ times)',active:'Active leak right now',next:'Next: choose a visit time','Terrace':'Terrace','Bathroom':'Bathroom','External wall':'External wall','Basement':'Basement'},
+ hi:{title:'लीकेज की शिकायत करें',where:'लीकेज कहाँ है?',how:'क्या यह पहले भी हुआ है?',desc:'आप क्या देख रहे हैं, बताइए',photos:'फ़ोटो जोड़ें (वैकल्पिक)',first:'पहली बार',recurring:'बार-बार (2+ बार)',active:'अभी पानी टपक रहा है',next:'आगे: विज़िट का समय चुनें','Terrace':'छत','Bathroom':'बाथरूम','External wall':'बाहरी दीवार','Basement':'तहखाना'},
+ mr:{title:'गळतीची तक्रार करा',where:'गळती कुठे आहे?',how:'हे आधी झाले आहे का?',desc:'तुम्हाला काय दिसते ते सांगा',photos:'फोटो जोडा (ऐच्छिक)',first:'पहिल्यांदाच',recurring:'वारंवार (2+ वेळा)',active:'आत्ता गळती सुरू आहे',next:'पुढे: भेटीची वेळ निवडा','Terrace':'गच्ची','Bathroom':'बाथरूम','External wall':'बाहेरील भिंत','Basement':'तळघर'}
+};
+
+/* ================= SVG ILLUSTRATIONS ================= */
+function svgURI(s){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s)}
+var ILL={
+ crack:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#cfc8bd"/><rect y="150" width="320" height="50" fill="#b9b1a4"/><rect x="0" y="120" width="320" height="30" fill="#a89f91"/><path d="M40 150 L70 132 L95 141 L128 118 L150 128 L185 104 L210 117 L250 92" stroke="#3b332b" stroke-width="3" fill="none"/><path d="M128 118 L135 98 M185 104 L176 86" stroke="#3b332b" stroke-width="2" fill="none"/><circle cx="185" cy="104" r="26" fill="none" stroke="#E8483F" stroke-width="3" stroke-dasharray="6 4"/><text x="12" y="22" font-family="Arial" font-size="13" fill="#3b332b">Parapet–slab joint crack</text></svg>'),
+ thermal:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><defs><radialGradient id="t" cx="55%" cy="55%" r="60%"><stop offset="0" stop-color="#1d3fd8"/><stop offset=".35" stop-color="#1fa4e0"/><stop offset=".6" stop-color="#f2d23c"/><stop offset=".85" stop-color="#ef7b2b"/><stop offset="1" stop-color="#d9312b"/></radialGradient></defs><rect width="320" height="200" fill="url(#t)"/><rect x="8" y="8" width="96" height="22" rx="4" fill="rgba(0,0,0,.45)"/><text x="14" y="23" font-family="Arial" font-size="12" fill="#fff">IR · 21.4°C min</text><path d="M150 20v20M150 160v20M20 100h20M280 100h20" stroke="#fff" stroke-width="2"/><circle cx="176" cy="110" r="10" fill="none" stroke="#fff" stroke-width="2"/><text x="196" y="190" font-family="Arial" font-size="12" fill="#fff">Blue = trapped moisture</text></svg>'),
+ prep:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#d8d2c8"/><g fill="#c4bcaf">'+Array.from({length:40}).map(function(_,i){return '<circle cx="'+((i*37)%320)+'" cy="'+((i*53)%200)+'" r="'+(2+i%4)+'"/>'}).join('')+'</g><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 1 · Surface ground and cleaned</text></svg>'),
+ sealant:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#d4cdc1"/><path d="M20 120 L80 100 L140 112 L200 88 L300 96" stroke="#7b7f86" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M20 120 L80 100 L140 112 L200 88 L300 96" stroke="#a9b0b9" stroke-width="4" fill="none" stroke-dasharray="3 5"/><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 2 · Cracks sealed + fibre mesh</text></svg>'),
+ primer:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#d4cdc1"/><rect x="0" y="40" width="210" height="160" fill="#e9e1c9" opacity=".9"/><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 3 · Primer applied</text></svg>'),
+ coat1:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#d4cdc1"/><rect x="0" y="30" width="320" height="170" fill="#9fb6c9"/><rect x="0" y="30" width="230" height="170" fill="#7f9db6"/><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 4 · Coat 1 membrane</text></svg>'),
+ coat2:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#6f8ea8"/><rect x="0" y="30" width="320" height="170" fill="#5d7f9b"/><text x="200" y="185" font-family="Arial" font-size="12" fill="#fff">DFT 1.2 mm ✓</text><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 5 · Coat 2, curing 72 h</text></svg>'),
+ flood:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#5d7f9b"/><rect x="0" y="70" width="320" height="130" fill="#7fb2e0" opacity=".85"/><path d="M0 80 Q40 72 80 80 T160 80 T240 80 T320 80" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><rect x="250" y="40" width="10" height="120" fill="#fff"/><text x="200" y="36" font-family="Arial" font-size="12" fill="#fff">Water level held 48 h</text><rect x="0" y="0" width="320" height="26" fill="rgba(75,42,123,.85)"/><text x="10" y="18" font-family="Arial" font-size="13" fill="#fff">Stage 6 · Flood (ponding) test</text></svg>'),
+ wall:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#e7dfd2"/><path d="M60 20 L70 70 L58 110 L75 160" stroke="#5a4f44" stroke-width="2.5" fill="none"/><ellipse cx="200" cy="120" rx="60" ry="40" fill="#b9ab94" opacity=".7"/><text x="12" y="190" font-family="Arial" font-size="12" fill="#5a4f44">Damp patch + plaster cracks</text></svg>'),
+ bath:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#eef1f3"/><g stroke="#c9d1d8">'+Array.from({length:9}).map(function(_,i){return '<path d="M'+(i*40)+' 0V200"/>'}).join('')+Array.from({length:6}).map(function(_,i){return '<path d="M0 '+(i*40)+'H320"/>'}).join('')+'</g><ellipse cx="160" cy="150" rx="80" ry="34" fill="#9eb2a8" opacity=".55"/><text x="12" y="190" font-family="Arial" font-size="12" fill="#445">Seepage below sunken area</text></svg>'),
+ base:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#9a9590"/><rect y="0" width="320" height="60" fill="#7d776f"/><path d="M0 100 H320" stroke="#5c564f" stroke-width="3"/><path d="M90 100 v60 M220 100 v70" stroke="#3f6f99" stroke-width="5" stroke-linecap="round" opacity=".8"/><text x="12" y="190" font-family="Arial" font-size="12" fill="#fff">Water through construction joint</text></svg>'),
+ plaque:svgURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#d4cdc1"/><rect x="90" y="40" width="140" height="120" rx="10" fill="#4B2A7B"/><rect x="110" y="56" width="56" height="56" fill="#fff"/><text x="174" y="76" font-family="Arial" font-size="11" fill="#fff">DryProof</text><text x="174" y="92" font-family="Arial" font-size="9" fill="#fff">Scan to verify</text><text x="110" y="140" font-family="Arial" font-size="10" fill="#fff">Asian Paints</text></svg>')
+};
+var STAGE_ILL=[ILL.prep,ILL.sealant,ILL.primer,ILL.coat1,ILL.coat2,ILL.flood];
+var LOC_ILL={'Terrace':ILL.crack,'Bathroom':ILL.bath,'External wall':ILL.wall,'Basement':ILL.base};
+
+/* ================= STATE ================= */
+var S=null;
+function blankStages(){return STAGES.map(function(n,i){return {n:i+1,status:'Locked'}})}
+function mkCase(o){
+ var c={id:o.id,sample:!!o.sample,ownerKey:o.ownerKey||null,owner:o.owner||{name:'Sample customer',address:'',pincode:'',phone:''},city:o.city||'Pune',location:o.location,recurrence:o.recurrence||'Recurring (2+ times)',desc:o.desc||'',photos:o.photos||[],area:o.area||400,createdAt:o.createdAt,
+  visit:o.visit||null,audit:null,second:null,quote:null,partnerId:null,excluded:[],reassignPending:false,stages:blankStages(),flood:null,qc:null,warranty:null,plaque:null,flags:[],log:[],priority:!!o.priority,firstTimeRight:null,monsoonDry:null,cureUntil:null};
+ return c;
+}
+function doStage(c,i,at,by,photo){var s=c.stages[i];s.status='Done';s.at=at;s.by=by;s.photo=photo||STAGE_ILL[i];s.hash=hashStr(s.photo);s.gps=gpsLabel(c)}
+function gpsLabel(c){var m={Pune:'Kothrud, Pune',Mumbai:'Andheri W, Mumbai',Nashik:'Gangapur Rd, Nashik'};return (m[c.city]||c.city)+' · on site ✓'}
+function hashStr(s){s=String(s||'');var h=5381,n=Math.min(s.length,6000);for(var i=0;i<n;i++){h=((h<<5)+h+s.charCodeAt(i))|0}return h+':'+s.length}
+function cityCode(city){return {Pune:'PN',Mumbai:'MB',Nashik:'NK'}[city]||'IN'}
+function finishCase(c,t,plan,pid,opts){
+ opts=opts||{};
+ c.audit={by:PEOPLE.diag,at:t-20*DAY,moist:SYS[c.location].moist,cause:SYS[c.location].cause,system:SYS[c.location].name,area:c.area,photo:ILL.thermal};
+ c.quote={plan:plan,price:PLAN[plan].rate*c.area,acceptedAt:t-18*DAY};
+ c.partnerId=pid;
+ var base=t-12*DAY;
+ for(var i=0;i<5;i++){doStage(c,i,base+i*20*HR,S.partners[pid].name)}
+ c.cureUntil=base+4*20*HR+72*HR;
+ var ok=opts.ftr!==false;
+ if(PLAN[plan].flood){c.flood={start:c.cureUntil+HR,end:c.cureUntil+49*HR,result:ok?'Pass':'Pass',photo:ILL.flood,by:PEOPLE.qc}}
+ c.stages[5].status='Done';c.stages[5].at=c.cureUntil+50*HR;c.stages[5].by=PEOPLE.qc;c.stages[5].photo=ILL.flood;c.stages[5].gps=gpsLabel(c);
+ c.qc={pass:true,by:PEOPLE.qc,at:c.cureUntil+50*HR,firstTime:ok};
+ c.firstTimeRight=ok;
+ c.plaque='AP-DP-'+cityCode(c.city)+'-'+c.id.replace('CASE-','');
+ c.warranty={status:'Active',years:PLAN[plan].years,issuedAt:c.qc.at,reason:plan==='Essential'?'All 6 stages verified and 48-hour flood test passed.':'All stages verified and final QC passed.'};
+ c.monsoonDry=opts.dry===undefined?null:opts.dry;
+}
+function seed(){
+ var t=Date.now();
+ S={v:2,clockMin:0,seq:7911,claimSeq:1201,leadSeq:31,session:{},demo:false,allowSample:false,chat:[],
+  network:{Pune:9,Mumbai:6,Nashik:3},netWarranties:1240,netClaims12m:31,aprilBookings:{Pune:31,Mumbai:29,Nashik:7},
+  partners:{
+   'P-8821':{id:'P-8821',name:'Ramesh Kumar & Sons',tier:'Certified Plus',city:'Pune',skills:['Terrace','External wall','Bathroom'],rating:4.8,jobs:142,ftr:97.1,complaints:0,validUntil:t+158*DAY,modules:[['PU membrane systems',100],['Flood testing',100],['Expansion joints',92],['Crack diagnosis',85]]},
+   'P-7710':{id:'P-7710',name:'Shinde Waterproofing',tier:'Master',city:'Pune',skills:['Basement','Bathroom','Terrace'],rating:4.9,jobs:211,ftr:98.6,complaints:0,validUntil:t+240*DAY,modules:[['PU membrane systems',100],['Flood testing',100],['Crystalline & injection',100],['Crack diagnosis',100]]},
+   'P-6402':{id:'P-6402',name:'Patil Brothers',tier:'Certified',city:'Pune',skills:['External wall','Bathroom','Terrace'],rating:4.6,jobs:58,ftr:95.4,complaints:1,validUntil:t+120*DAY,modules:[['PU membrane systems',80],['Flood testing',60],['Expansion joints',70],['Crack diagnosis',90]]},
+   'P-5530':{id:'P-5530',name:'Coastal Seal Co.',tier:'Certified Plus',city:'Mumbai',skills:['External wall','Terrace'],rating:4.4,jobs:96,ftr:93.8,complaints:3,validUntil:t+90*DAY,modules:[['PU membrane systems',100],['Flood testing',100],['Expansion joints',75],['Crack diagnosis',70]]},
+   'P-4410':{id:'P-4410',name:'Godavari Seal Works',tier:'Certified',city:'Nashik',skills:['Terrace','Bathroom','External wall'],rating:4.7,jobs:41,ftr:96.0,complaints:0,validUntil:t+200*DAY,modules:[['PU membrane systems',85],['Flood testing',70],['Expansion joints',60],['Crack diagnosis',80]]}
+  },
+  cases:{},claims:{},projects:{},leads:[],
+  circle:{joined:false,reminder:null,questions:[
+   {q:'Our terrace leaks only in heavy rain. Do I need to redo the whole terrace?',by:'Homeowner, Kothrud',a:'Not always. A diagnosis checks whether it is a joint, a drain or the full membrane. Often only the parapet joints and drains need treatment.',ab:'AP Diagnostic Expert'},
+   {q:'Is a flood test worth the 2 extra days?',by:'Homeowner, Baner',a:'Yes — it is the only way to prove the terrace holds water before the monsoon does it for you. Ours passed and the plaque shows the result.',ab:'Verified DryProof homeowner'},
+   {q:'Damp patch on the inside of an external wall — paint or waterproofing?',by:'Homeowner, Nashik',a:'Repainting hides it for a few months. If the wall reads damp on a moisture meter, the outside needs a crack-bridging coat first.',ab:'AP Diagnostic Expert'},
+   {q:'When should I book a pre-monsoon check?',by:'Homeowner, Andheri',a:'March to early May. Work needs dry days to cure, and crews get booked fast in May.',ab:'AP Diagnostic Expert'}]}
+ };
+ // CASE-4471: live demo job (terrace, Essential, stages 1-3 done)
+ var a=mkCase({id:'CASE-4471',ownerKey:'H1',owner:{name:'Ananya Deshmukh',address:'B-702 Magnolia Enclave, Kothrud, Pune',pincode:'411038',phone:'9822012345'},city:'Pune',location:'Terrace',recurrence:'Recurring (2+ times)',desc:'Ceiling below the terrace gets a wet patch every monsoon, worse near the parapet corner.',photos:[ILL.crack],createdAt:t-12*DAY,visit:{at:t-11*DAY,window:'11 am–1 pm',expert:PEOPLE.diag}});
+ a.audit={by:PEOPLE.diag,at:t-11*DAY+3*HR,moist:34,cause:SYS.Terrace.cause,system:SYS.Terrace.name,area:400,photo:ILL.thermal};
+ a.quote={plan:'Essential',price:44000,acceptedAt:t-9*DAY};
+ a.partnerId='P-8821';
+ doStage(a,0,t-3*DAY,'Ramesh Kumar & Sons');doStage(a,1,t-2*DAY-2*HR,'Ramesh Kumar & Sons');doStage(a,2,t-1*DAY-3*HR,'Ramesh Kumar & Sons');
+ a.stages[3].status='Open';
+ a.log=[{at:t-12*DAY,who:'Homeowner',what:'Leak reported (Terrace, recurring)'},{at:t-11*DAY+3*HR,who:PEOPLE.diag,what:'Diagnosis report signed'},{at:t-9*DAY,who:'Homeowner',what:'DryProof Essential accepted'},{at:t-9*DAY,who:'System',what:'Matched to Ramesh Kumar & Sons (Certified Plus)'}];
+ S.cases[a.id]=a;
+ // CASE-3920: older completed job with active warranty
+ var b=mkCase({id:'CASE-3920',ownerKey:'H1',owner:{name:'Ananya Deshmukh',address:'B-702 Magnolia Enclave, Kothrud, Pune',pincode:'411038',phone:'9822012345'},city:'Pune',location:'External wall',recurrence:'First time',area:300,createdAt:t-430*DAY,visit:{at:t-428*DAY,window:'9–11 am',expert:PEOPLE.diag}});
+ finishCase(b,t-400*DAY,'Basic','P-6402',{dry:true});
+ b.log=[{at:b.createdAt,who:'Homeowner',what:'Leak reported (External wall)'},{at:b.qc.at,who:PEOPLE.qc,what:'Final QC passed — 5-year warranty issued'}];
+ S.cases[b.id]=b;
+ // Sample network data for Control Tower
+ var samples=[
+  ['CASE-5001','Pune','Terrace','Essential','P-8821','done',true,true],
+  ['CASE-5002','Pune','Basement','Essential','P-7710','done',true,true],
+  ['CASE-5003','Pune','Bathroom','Basic','P-6402','done',true,true],
+  ['CASE-5004','Pune','Terrace','Essential','P-7710','exec'],
+  ['CASE-5005','Pune','External wall','Basic','P-6402','verify'],
+  ['CASE-5006','Mumbai','External wall','Essential','P-5530','done',false,false],
+  ['CASE-5007','Mumbai','External wall','Basic','P-5530','done',true,false],
+  ['CASE-5008','Mumbai','Terrace','Essential','P-5530','exec'],
+  ['CASE-5009','Mumbai','Terrace','Essential','P-5530','done',true,true],
+  ['CASE-5010','Nashik','Terrace','Basic','P-4410','done',true,true],
+  ['CASE-5011','Nashik','Bathroom','Basic',null,'prescribe'],
+  ['CASE-5012','Pune','Terrace','Essential','P-8821','done',true,true],
+  ['CASE-5013','Mumbai','Basement','Essential',null,'diagnose'],
+  ['CASE-5014','Pune','Terrace','Essential',null,'diagnose']
+ ];
+ samples.forEach(function(r,k){
+  var c=mkCase({id:r[0],sample:true,city:r[1],location:r[2],createdAt:t-(40-k*2)*DAY,area:300+(k%4)*100,visit:{at:t-(38-k*2)*DAY,window:'9–11 am',expert:PEOPLE.diag}});
+  if(r[5]==='done'){finishCase(c,t-(k%5)*DAY,r[3],r[4],{ftr:r[6],dry:r[7]})}
+  else if(r[5]==='exec'||r[5]==='verify'){
+   c.audit={by:PEOPLE.diag,at:t-12*DAY,moist:SYS[c.location].moist,cause:SYS[c.location].cause,system:SYS[c.location].name,area:c.area,photo:ILL.thermal};
+   c.quote={plan:r[3],price:PLAN[r[3]].rate*c.area,acceptedAt:t-10*DAY};c.partnerId=r[4];
+   var n=r[5]==='exec'?2:5;for(var i=0;i<n;i++){doStage(c,i,t-(8-i)*DAY,S.partners[r[4]].name)}
+   if(n<5)c.stages[n].status='Open'; else c.cureUntil=t-1*DAY;
+  } else if(r[5]==='prescribe'){
+   c.audit={by:PEOPLE.diag,at:t-2*DAY,moist:SYS[c.location].moist,cause:SYS[c.location].cause,system:SYS[c.location].name,area:c.area,photo:ILL.thermal};
+  } else {c.visit={at:t+2*DAY,window:'11 am–1 pm',expert:PEOPLE.diag}}
+  S.cases[c.id]=c;
+ });
+ S.claims['CL-1101']={id:'CL-1101',caseId:'CASE-5006',sample:true,raisedAt:t-20*DAY,where:'Same area as the treated work',noticed:t-21*DAY,severity:'Active drip',desc:'Water entering near window frame after rain.',photo:null,status:'Closed',visitAt:t-19*DAY,cause:'Workmanship',reason:'Coat thickness below spec at the window reveal.',fixedAt:t-17*DAY,closedAt:t-16*DAY,log:[]};
+ S.claims['CL-1102']={id:'CL-1102',caseId:'CASE-5007',sample:true,raisedAt:t-41*HR,where:'Same area as the treated work',noticed:t-3*DAY,severity:'Minor damp patch',desc:'Damp patch returned on the west wall.',photo:null,status:'Linked',visitAt:null,cause:null,reason:'',log:[]};
+ S.claims['CL-1103']={id:'CL-1103',caseId:'CASE-5001',sample:true,raisedAt:t-30*DAY,where:'Nearby, outside the treated area',noticed:t-31*DAY,severity:'Minor damp patch',desc:'Stain on the staircase wall.',photo:null,status:'Closed',visitAt:t-29*DAY,cause:'Outside job scope',reason:'Staircase wall was not part of the treated area; water enters from a broken overflow pipe.',closedAt:t-28*DAY,log:[]};
+ // Builder project
+ var flats=[];var fl=0;
+ for(var f=1;f<=6;f++){for(var u=1;u<=4;u++){fl++;var st=fl<=16?6:(fl<=20?5:3);
+  flats.push({flat:'F-'+f+'0'+u,stages:st,handedAt:st===6?t-(30-fl)*DAY:null,plaque:st===6?'AP-DP-PN-201-'+f+'0'+u:null,flood:st===6?'Pass':null});}}
+ S.projects['PRJ-201']={id:'PRJ-201',name:'Sai Heights',location:'Baner, Pune',builder:'Joshi Developers',architect:'Kavya Joshi',flatsCount:24,storeys:6,partnerId:'P-7710',phase:'Phase 1 · Advisory + certified crews',
+  elements:[{name:'Terrace',area:6000,status:'Verified · flood test passed',at:t-25*DAY},{name:'Basement',area:10000,status:'Verified',at:t-60*DAY},{name:'Water tanks',area:1500,status:'Verified',at:t-50*DAY},{name:'Wet areas',area:3840,status:'16 of 24 flats verified',at:null}],
+  flats:flats};
+ save();
+}
+function load(){try{var raw=localStorage.getItem(KEY);if(raw){S=JSON.parse(raw);if(!S||S.v!==2)S=null}}catch(e){S=null}if(!S)seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Browser storage is full — try smaller photos or Reset demo.')}}
+function now(){return Date.now()+(S.clockMin||0)*MIN}
+
+/* ================= HELPERS ================= */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function inr(n){return '₹'+Math.round(n).toLocaleString('en-IN')}
+function fmt(t){if(!t)return '—';var d=new Date(t);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'})}
+function fmtD(t){if(!t)return '—';return new Date(t).toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+function dur(ms){var neg=ms<0;ms=Math.abs(ms);var d=Math.floor(ms/DAY),h=Math.floor(ms%DAY/HR),m=Math.floor(ms%HR/MIN);var s=d?d+'d '+h+'h':h?h+'h '+m+'m':m?m+'m':'under a minute';return neg?'-'+s:s}
+function partner(id){return S.partners[id]||null}
+function myCases(){return Object.values(S.cases).filter(function(c){return c.ownerKey==='H1'}).sort(function(x,y){return y.createdAt-x.createdAt})}
+function claimsFor(caseId){return Object.values(S.claims).filter(function(k){return k.caseId===caseId}).sort(function(x,y){return y.raisedAt-x.raisedAt})}
+function stagesDone(c,upto){for(var i=0;i<upto;i++){if(c.stages[i].status!=='Done')return false}return true}
+function phaseIdx(c){
+ if(!c.audit)return 0;
+ if(!c.quote||!c.quote.acceptedAt)return 1;
+ if(!stagesDone(c,5))return 2;
+ if(!c.warranty||c.warranty.status!=='Active')return 3;
+ return 4;
+}
+function statusText(c){
+ var i=phaseIdx(c);
+ if(i===0)return c.visit?'Diagnosis visit '+fmtD(c.visit.at)+', '+c.visit.window:'Awaiting visit booking';
+ if(i===1)return c.second&&c.second.status==='Requested'?'Second opinion requested':'Report ready — choose your plan';
+ if(i===2){if(c.warranty&&c.warranty.status==='On hold')return 'On hold — crew redoing a step';var k=c.stages.findIndex(function(s){return s.status!=='Done'});return 'Work in progress — '+STAGES[k]}
+ if(i===3){if(c.flood&&!c.flood.result)return 'Flood test running';return 'Final checks by AP QC supervisor'}
+ return c.warranty.years+'-year warranty active';
+}
+function chipFor(c){var i=phaseIdx(c);return '<span class="chip '+(i===4?'g':i===3?'a':'')+'">'+PHASES[i]+'</span>'}
+function phaseBar(c){var p=phaseIdx(c);return '<div class="phases" role="list" aria-label="Job progress">'+PHASES.map(function(n,i){var cl=i<p||(p===4&&i===4)?'done':i===p?'cur':'';return '<div class="ph '+cl+'" role="listitem"><i>'+(cl==='done'?'✓':(i+1))+'</i>'+n+'</div>'}).join('')+'</div>'}
+function nextDays(n){var out=[],d=new Date(now());d.setHours(10,0,0,0);while(out.length<n){d=new Date(d.getTime()+DAY);if(d.getDay()!==0)out.push(d.getTime())}return out}
+function qrSVG(text){var h=Math.abs(parseInt(hashStr(text)))||7,n=21,cells='';var rnd=function(){h=(h*1103515245+12345)&0x7fffffff;return h/0x7fffffff};
+ function finder(x,y){return '<rect x="'+x+'" y="'+y+'" width="7" height="7" fill="#000"/><rect x="'+(x+1)+'" y="'+(y+1)+'" width="5" height="5" fill="#fff"/><rect x="'+(x+2)+'" y="'+(y+2)+'" width="3" height="3" fill="#000"/>'}
+ for(var y=0;y<n;y++)for(var x=0;x<n;x++){var inF=(x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12);if(!inF&&rnd()>.52)cells+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>'}
+ return '<svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges" role="img" aria-label="QR code for '+esc(text)+'"><rect width="21" height="21" fill="#fff"/><g fill="#000">'+cells+'</g>'+finder(0,0)+finder(14,0)+finder(0,14)+'</svg>'}
+function log(c,who,what){c.log=c.log||[];c.log.push({at:now(),who:who,what:what})}
+function img(src,alt){return '<img class="thumb" src="'+src+'" alt="'+esc(alt)+'" onclick="A.zoom(this.src,this.alt)">'}
+function resizeFile(file,cb){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var m=900,w=im.width,h=im.height;if(w>m||h>m){var k=m/Math.max(w,h);w=Math.round(w*k);h=Math.round(h*k)}var cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);try{cb(cv.toDataURL('image/jpeg',.72))}catch(e){cb(r.result)}};im.onerror=function(){toast('That file is not an image.')};im.src=r.result};r.readAsDataURL(file)}
+function matchPartner(c){
+ var need=c.quote.plan==='Essential'?2:1;
+ var cand=Object.values(S.partners).filter(function(p){return p.skills.indexOf(c.location)>=0&&TIER[p.tier].rank>=need&&c.excluded.indexOf(p.id)<0});
+ var local=cand.filter(function(p){return p.city===c.city});if(local.length)cand=local;
+ cand.sort(function(x,y){
+  if(c.quote.plan==='Basic'){var a=TIER[x.tier].rank,b=TIER[y.tier].rank;if(a!==b)return a-b}
+  if(c.location==='Basement'){return TIER[y.tier].rank-TIER[x.tier].rank}
+  return y.rating-x.rating});
+ return cand[0]||null;
+}
+function payout(c){var p=partner(c.partnerId);return p?TIER[p.tier].rate*c.area:0}
+
+/* ================= FLAGS / AI (rule-based) ================= */
+function allFlags(){
+ var out=[];var cases=Object.values(S.cases);var t=now();
+ var hashes={};
+ cases.forEach(function(c){c.stages.forEach(function(s){if(s.status==='Done'&&s.hash&&s.photo&&s.photo.indexOf('data:image/svg')!==0){(hashes[s.hash]=hashes[s.hash]||[]).push(c.id+' · '+STAGES[s.n-1])}})});
+ cases.forEach(function(c){var fl=c.flags||[];if(fl.length)out.push({kind:'rush',sev:'r',title:'Stages done too fast — '+c.id,body:fl.length===1?fl[0].text:fl.length+' stages were signed within minutes of each other (each normally takes several hours). Latest: '+fl[fl.length-1].text,caseId:c.id,action:'Site check before final QC'})});
+ Object.keys(hashes).forEach(function(h){if(hashes[h].length>1)out.push({kind:'photo',sev:'r',title:'Same photo used twice',body:hashes[h].join(' and '),caseId:hashes[h][0].split(' · ')[0],action:'Site check'})});
+ Object.values(S.partners).forEach(function(p){if(p.ftr<95)out.push({kind:'ftr',sev:'r',title:'Partner quality slipping — '+p.name,body:'First-time-right '+p.ftr.toFixed(1)+'% (below 95%). '+p.complaints+' complaints this year.',partnerId:p.id,action:'Check their next jobs first'})});
+ var byCS={};Object.values(S.claims).forEach(function(k){var c=S.cases[k.caseId];if(!c)return;var key=c.city+'|'+c.location;byCS[key]=(byCS[key]||0)+1});
+ Object.keys(byCS).forEach(function(k){if(byCS[k]>=2){var p=k.split('|');out.push({kind:'sys',sev:'r',title:SYS[p[1]].name+' — '+byCS[k]+' complaints in '+p[0],body:'More complaints than other cities for the same system this quarter.',action:'Technical review'})}});
+ Object.keys(S.network).forEach(function(city){var cap=S.network[city]*4,b=S.aprilBookings[city];if(b>cap)out.push({kind:'cap',sev:'r',title:'April bookings above crew capacity — '+city,body:b+' bookings vs '+cap+' jobs of crew capacity ('+S.network[city]+' crews × 4).',action:'Certify more crews'})});
+ Object.values(S.claims).forEach(function(k){if(k.status!=='Closed'&&!k.visitAt&&t-k.raisedAt>40*HR)out.push({kind:'sla',sev:'',title:'Complaint '+k.id+' near 48 hrs without a visit',body:'Raised '+dur(t-k.raisedAt)+' ago. Simple rule, not AI.',claimId:k.id,action:'Escalate'})});
+ return out;
+}
+function escalation(k){if(k.status==='Closed')return '';var age=now()-k.raisedAt;if(age>15*DAY)return '<span class="chip c">Review by a second independent engineer</span>';if(age>7*DAY)return '<span class="chip c">Escalated to AP regional technical head</span>';return ''}
+
+/* ================= UI PRIMITIVES ================= */
+var D={};// drafts in memory
+function toast(m){var o=document.querySelector('.toast');if(o)o.remove();var d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove()},3200)}
+var lastFocus=null;
+function modal(html){closeModal();lastFocus=document.activeElement;var bg=document.createElement('div');bg.className='modal-bg';bg.innerHTML='<div class="modal" role="dialog" aria-modal="true">'+html+'</div>';bg.addEventListener('click',function(e){if(e.target===bg)closeModal()});document.body.appendChild(bg);var f=bg.querySelector('button,select,input,textarea');if(f)f.focus()}
+function closeModal(){var m=document.querySelector('.modal-bg');if(m){m.remove();if(lastFocus&&lastFocus.focus)lastFocus.focus()}}
+document.addEventListener('keydown',function(e){
+ if(e.key==='Escape'){closeModal();if(S.demoOpen){S.demoOpen=false;renderDemo()}}
+ var tag=(e.target.tagName||'').toLowerCase();
+ if((e.key==='d'||e.key==='D')&&e.shiftKey&&tag!=='input'&&tag!=='textarea'&&tag!=='select'){S.demo=true;S.demoOpen=!S.demoOpen;save();renderDemo()}
+});
+
+/* ================= ROUTER ================= */
+function route(){var h=location.hash.replace(/^#\/?/,'');var parts=h.split('?');return {p:parts[0].split('/').filter(Boolean),q:new URLSearchParams(parts[1]||'')}}
+function go(h){if(location.hash===h)render();else location.hash=h}
+window.addEventListener('hashchange',function(){closeModal();render();window.scrollTo(0,0)});
+
+var NAV={
+ h:[['#/h','My cases'],['#/h/ask','Ask DryProof'],['#/h/circle','Circle']],
+ p:[['#/p','My jobs'],['#/p/earnings','My earnings'],['#/p/tier','Tier & training']],
+ b:[['#/b','My projects'],['#/b/spec','New project spec'],['#/b/audit','Site audit'],['#/b/complaint','Raise a complaint']],
+ ap:[['#/ap/diag','Diagnosis'],['#/ap/qc','QC'],['#/ap/claims','Complaints'],['#/ap/tower','Control Tower']]
+};
+var ROLE_NAME={h:'Homeowner',p:'Partner',b:'Builder / Architect',ap:'Asian Paints team'};
+function userName(){var r=S.session.role;if(r==='h')return 'Ananya Deshmukh';if(r==='p'){var p=partner(S.session.pid);return p?p.name:''}if(r==='b')return 'Kavya Joshi · Joshi Developers';if(r==='ap')return 'AP Pune Region';return ''}
+function shell(inner){
+ var r=route(),area=r.p[0],role=S.session.role;var navHtml='',who='';
+ if(role&&NAV[role]&&area===role){var cur='#/'+r.p.join('/');navHtml='<nav class="nav" aria-label="Main">'+NAV[role].map(function(n){var on=cur===n[0]||(n[0]!=='#/'+role&&cur.indexOf(n[0])===0)||(n[0]==='#/'+role&&(cur==='#/'+role||/^#\/(h\/case|h\/new|h\/done|p\/job|b\/project|b\/flat)/.test(cur)));return '<a href="'+n[0]+'" class="'+(on?'on':'')+'">'+n[1]+'</a>'}).join('')+'</nav>';
+  who='<div class="who">'+esc(userName())+'<button onclick="A.logout()" aria-label="Sign out">Sign out</button></div>'}
+ return '<header class="top"><div class="top-in"><a class="brand" href="#/" aria-label="DryProof home"><span class="logo" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C9 7 6 10.5 6 14a6 6 0 0012 0c0-3.5-3-7-6-12z" fill="#fff"/></svg></span><span><b>DryProof</b><br><small>by Asian Paints</small></span></a>'+navHtml+who+'</div></header><main id="main">'+inner+'</main>';
+}
+function render(){
+ var r=route(),p=r.p,html='';
+ try{
+  if(!p.length)html=vHome();
+  else if(p[0]==='verify')html=vPassport(p[1]);
+  else if(p[0]==='login')html=vLogin(p[1]);
+  else if(NAV[p[0]]){
+   if(S.session.role!==p[0])html=vLogin(p[0]);
+   else if(p[0]==='h')html=p[1]==='new'?vReport(r.q):p[1]==='done'?vDone(p[2]):p[1]==='case'?(p[3]==='complaint'?vComplaint(p[2]):vCase(p[2])):p[1]==='ask'?vAsk():p[1]==='circle'?vCircle():vMyCases();
+   else if(p[0]==='p')html=p[1]==='job'?vJob(p[2]):p[1]==='earnings'?vEarnings():p[1]==='tier'?vTier():vJobs();
+   else if(p[0]==='b')html=p[1]==='project'?vProject(p[2]):p[1]==='flat'?vFlat(p[2],p[3]):p[1]==='spec'?vSpec():p[1]==='audit'?vAudit(r.q):p[1]==='complaint'?vBComplaint():vProjects();
+   else if(p[0]==='ap')html=p[1]==='diag'?(p[2]?vDiagItem(p[2],p[3]):vDiag()):p[1]==='qc'?(p[2]?vQCItem(p[2]):vQC()):p[1]==='claims'?(p[2]?vClaim(p[2]):vClaims()):p[1]==='case'?vAPCase(p[2]):vTower();
+  } else html=vHome();
+ }catch(e){console.error(e);html='<div class="card bad"><h2>Something went wrong on this screen</h2><p>'+esc(e.message)+'</p><a class="btn" href="#/">Go home</a> <button class="btn o" onclick="A.reset()">Reset demo</button></div>'}
+ document.getElementById('app').innerHTML=shell(html);
+ renderDemo();
+}
+
+/* ================= PUBLIC: HOME, LOGIN, PASSPORT ================= */
+function vHome(){
+ return '<div class="hero"><h1>Waterproofing you can check.</h1><p style="opacity:.9;max-width:640px">Independent diagnosis, certified partners, every stage on record, and a warranty backed by Asian Paints.</p></div>'+
+ '<h2>Continue as</h2><div class="grid g3" style="margin-bottom:18px">'+
+ roleCard('h','Homeowner','Report a leak, track your job, check your warranty.','<path d="M3 11l9-8 9 8v10H3z" fill="none" stroke="#4B2A7B" stroke-width="2"/><path d="M9 21v-6h6v6" fill="none" stroke="#4B2A7B" stroke-width="2"/>')+
+ roleCard('p','Partner','See today’s jobs, sign off stages, track your earnings.','<path d="M4 15a8 8 0 0116 0v2H4z" fill="none" stroke="#4B2A7B" stroke-width="2"/><path d="M12 7V3M9 4h6" stroke="#4B2A7B" stroke-width="2"/>')+
+ roleCard('b','Builder / Architect','Specs, stage checks across flats, handover records.','<rect x="5" y="3" width="14" height="18" fill="none" stroke="#4B2A7B" stroke-width="2"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2" stroke="#4B2A7B" stroke-width="2"/>')+
+ '</div><div class="card soft row sp"><div><h3 style="margin:0">Check a QR plaque</h3><p class="mut small" style="margin:0">Anyone can verify a DryProof job — buyers, tenants, inspectors.</p></div><form class="row" onsubmit="event.preventDefault();A.verify(this.q.value)"><label class="sr" for="q">Plaque ID</label><input class="in" id="q" name="q" placeholder="e.g. AP-DP-PN-3920" style="width:220px"><button class="btn">Verify</button></form></div>'+
+ '<p class="small" style="text-align:center;margin-top:22px"><a href="#/login/ap">Asian Paints team sign-in</a></p>';
+}
+function roleCard(k,t,d,ic){return '<button class="role" onclick="A.login(\''+k+'\')"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg></div><h3>'+t+'</h3><p class="mut small" style="margin:0">'+d+'</p></button>'}
+function vLogin(role){
+ if(!ROLE_NAME[role])return vHome();
+ var extra='';
+ if(role==='p'){extra='<label class="f" for="pid">Partner account</label><select class="in" id="pid">'+Object.values(S.partners).map(function(p){return '<option value="'+p.id+'"'+(p.id==='P-8821'?' selected':'')+'>'+esc(p.name)+' · '+p.tier+' · '+p.city+'</option>'}).join('')+'</select>'}
+ var name={h:'Ananya Deshmukh · +91 98220 12345',b:'Kavya Joshi · Joshi Developers',ap:'AP Pune Region · technical team'}[role]||'';
+ return '<div class="card" style="max-width:460px;margin:30px auto"><h1>Sign in</h1><p class="mut">'+ROLE_NAME[role]+'</p>'+(name?'<label class="f">Account</label><div class="in" style="background:#faf9fc">'+esc(name)+'</div>':'')+extra+
+ '<label class="f" for="otp">One-time code</label><input class="in" id="otp" value="482913" inputmode="numeric" aria-describedby="otph"><p id="otph" class="tiny mut">Demo account — code pre-filled.</p><div class="row" style="margin-top:14px"><button class="btn" onclick="A.doLogin(\''+role+'\')">Continue</button><a class="btn o" href="#/">Back</a></div></div>';
+}
+function vPassport(id){
+ var c=Object.values(S.cases).find(function(x){return x.plaque===id});
+ var flat=null,prj=null;
+ if(!c){Object.values(S.projects).forEach(function(pr){pr.flats.forEach(function(f){if(f.plaque===id){flat=f;prj=pr}})})}
+ if(!c&&!flat)return '<div class="card"><h1>Warranty passport</h1><p>No DryProof record found for <b>'+esc(id||'')+'</b>. Check the ID on the plaque and try again.</p><a class="btn" href="#/">Home</a></div>';
+ if(flat){var pp=partner(prj.partnerId);return '<div class="card"><div class="row sp"><div><span class="chip g">Verified handover record</span><h1 style="margin-top:8px">'+esc(prj.name)+' · '+flat.flat+'</h1><p class="mut">'+esc(prj.location)+' · Plaque '+esc(id)+'</p></div>'+qrSVG(id)+'</div><table><tr><th>Wet-area waterproofing</th><td>All 6 stages verified</td></tr><tr><th>Flood test</th><td>'+flat.flood+'</td></tr><tr><th>Handed over</th><td>'+fmtD(flat.handedAt)+'</td></tr><tr><th>Partner</th><td>'+esc(pp.name)+' · '+pp.tier+'</td></tr><tr><th>Builder</th><td>'+esc(prj.builder)+'</td></tr></table><p class="tiny mut" style="margin-top:12px">Tamper-evident digital record kept by Asian Paints.</p></div>'}
+ var p=partner(c.partnerId),w=c.warranty;
+ var exp=w?w.issuedAt+w.years*365*DAY:null;
+ return '<div class="card"><div class="row sp" style="align-items:flex-start"><div><span class="chip '+(w&&w.status==='Active'?'g':'a')+'">'+(w?(w.status==='Active'?'Warranty active':'Warranty '+w.status.toLowerCase()):'Work in progress')+'</span><h1 style="margin-top:8px">Warranty passport</h1><p class="mut">Plaque '+esc(id)+' · '+esc(c.location)+' · '+esc(c.city)+'</p></div>'+qrSVG(id)+'</div>'+
+ '<div class="grid g3"><div class="kpi"><b>'+(w?w.years+' yrs':'—')+'</b><span>Warranty</span></div><div class="kpi"><b style="font-size:1.05rem">'+(exp?fmtD(exp):'—')+'</b><span>Valid until</span></div><div class="kpi"><b style="font-size:1.05rem">'+(c.flood?esc(c.flood.result||'Running'):'Not part of plan')+'</b><span>48-hour flood test</span></div></div>'+
+ '<h3 style="margin-top:18px">Work record</h3><ul class="stages">'+c.stages.map(function(s,i){return '<li class="stg"><span class="dot '+(s.status==='Done'?'done':'')+'">'+(s.status==='Done'?'✓':s.n)+'</span><div style="flex:1"><b>'+STAGES[i]+(i===5&&!PLAN[c.quote.plan].flood?' (final QC)':'')+'</b><div class="small mut">'+(s.status==='Done'?fmt(s.at)+' · '+esc(s.by||'')+' · '+esc(s.gps||''):'Pending')+'</div></div>'+(s.photo&&s.status==='Done'?img(s.photo,STAGES[i]+' photo'):'')+'</li>'}).join('')+'</ul>'+
+ '<table style="margin-top:8px"><tr><th>System</th><td>'+esc(c.audit?c.audit.system:'—')+'</td></tr><tr><th>Diagnosed by</th><td>'+esc(c.audit?c.audit.by:'—')+'</td></tr><tr><th>Partner</th><td>'+(p?esc(p.name)+' · '+p.tier:'—')+'</td></tr><tr><th>Checked by</th><td>'+esc(c.qc?c.qc.by:'—')+'</td></tr><tr><th>Owner</th><td>'+esc(maskName(c.owner.name))+'</td></tr></table>'+
+ '<p class="tiny mut" style="margin-top:12px">Tamper-evident digital record kept by Asian Paints. Dates are when each step was signed on site.</p></div>';
+}
+function maskName(n){n=n||'';var parts=n.split(' ');return parts.map(function(x,i){return i===0?x:x.charAt(0)+'.'}).join(' ')}
+
+/* ================= HOMEOWNER ================= */
+function vMyCases(){
+ var cs=myCases();
+ return '<div class="row sp" style="margin-bottom:12px"><div><h1 style="margin:0">My cases</h1><p class="mut" style="margin:0">Hi Ananya — here is everything in one place.</p></div><a class="btn c" href="#/h/new">+ Report a leak</a></div>'+
+ (S.circle.joined?'<p><span class="chip">Circle member</span>'+(cs.some(function(c){return c.quote&&c.quote.acceptedAt})?' <span class="chip g">Priority service</span>':'')+'</p>':'')+
+ (cs.length?cs.map(function(c){var open=claimsFor(c.id).filter(function(k){return k.status!=='Closed'}).length;return '<div class="list-item"><div style="min-width:220px"><div class="row"><b>'+c.id+'</b>'+chipFor(c)+(c.priority?'<span class="chip c">Priority</span>':'')+(open?'<span class="chip c">'+open+' open complaint</span>':'')+'</div><div class="small">'+esc(c.location)+' · '+esc(c.owner.address||'')+'</div><div class="small mut">'+esc(statusText(c))+'</div></div><a class="btn sm" href="#/h/case/'+c.id+'">Open</a></div>'}).join(''):'<div class="card">No cases yet. <a href="#/h/new">Report a leak</a>.</div>');
+}
+function vReport(q){
+ if(!D.r||D.r._new){D.r={step:1,lang:'en',location:null,recurrence:null,desc:'',photos:[],name:'Ananya Deshmukh',address:'B-702 Magnolia Enclave, Kothrud, Pune',pincode:'411038',phone:'9822012345',day:null,win:null,priority:q.get('priority')==='1',err:''}}
+ var r=D.r,L=I18N[r.lang];
+ if(r.step===1){
+  return '<div class="card" style="max-width:760px"><div class="row sp"><h1 style="margin:0">'+L.title+'</h1><div class="opts" role="group" aria-label="Language">'+[['en','English'],['hi','हिन्दी'],['mr','मराठी']].map(function(l){return '<button class="opt '+(r.lang===l[0]?'on':'')+'" onclick="A.rset(\'lang\',\''+l[0]+'\')">'+l[1]+'</button>'}).join('')+'</div></div>'+
+  (r.priority?'<p><span class="chip c">Priority check · Circle</span></p>':'')+
+  '<p class="small mut">Step 1 of 2 · Tell us about the problem</p>'+
+  '<label class="f">'+L.where+'</label><div class="opts">'+LOCS.map(function(l){return '<button class="opt '+(r.location===l?'on':'')+'" onclick="A.rset(\'location\',\''+l+'\')">'+L[l]+'</button>'}).join('')+'</div>'+
+  '<label class="f">'+L.how+'</label><div class="opts">'+[['First time',L.first],['Recurring (2+ times)',L.recurring],['Active leak right now',L.active]].map(function(o){return '<button class="opt '+(r.recurrence===o[0]?'on':'')+'" onclick="A.rset(\'recurrence\',\''+o[0]+'\')">'+o[1]+'</button>'}).join('')+'</div>'+
+  (r.recurrence&&r.recurrence!=='First time'?'<p class="chip c" style="margin-top:8px">'+(r.recurrence==='Active leak right now'?'Active leak — we will offer the earliest slot':'Recurring — flagged for priority diagnosis')+'</p>':'')+
+  '<label class="f" for="desc">'+L.desc+'</label><textarea class="in" id="desc" maxlength="500" oninput="D.r.desc=this.value;document.getElementById(\'cc\').textContent=this.value.length+\'/500\'">'+esc(r.desc)+'</textarea><div class="tiny mut" id="cc">'+r.desc.length+'/500</div>'+
+  '<div class="row"><button class="btn o sm" onclick="A.voice()" title="Voice input">🎙 Speak instead</button></div>'+
+  '<label class="f">'+L.photos+'</label><div class="row">'+r.photos.map(function(ph,i){return '<span style="position:relative">'+img(ph,'Your photo '+(i+1))+'<button class="btn sm o" style="position:absolute;top:-8px;right:-8px;padding:0 6px" aria-label="Remove photo" onclick="A.rmPhoto('+i+')">×</button></span>'}).join('')+
+  '<label class="btn o sm" style="cursor:pointer">+ Add photo<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.addPhoto(this)"></label>'+(S.allowSample?'<button class="btn o sm" onclick="A.samplePhoto()">Use sample photo</button>':'')+'</div>'+
+  (r.err?'<p class="err">'+esc(r.err)+'</p>':'')+
+  '<div class="row" style="margin-top:18px"><button class="btn" onclick="A.rnext()">'+L.next+' →</button><a class="btn o" href="#/h">Cancel</a></div></div>';
+ }
+ var days=nextDays(3),wins=['9–11 am','11 am–1 pm','2–4 pm','4–6 pm'];
+ return '<div class="card" style="max-width:760px"><h1>Book a diagnosis visit</h1><p class="small mut">Step 2 of 2 · An Asian Paints diagnostic expert visits first. They do not sell or do the work.</p>'+
+ '<div class="grid g2"><div><label class="f" for="nm">Name</label><input class="in" id="nm" value="'+esc(r.name)+'" oninput="D.r.name=this.value"></div><div><label class="f" for="ph">Mobile</label><input class="in" id="ph" inputmode="numeric" maxlength="10" value="'+esc(r.phone)+'" oninput="D.r.phone=this.value"></div></div>'+
+ '<div class="grid g2"><div><label class="f" for="ad">Address</label><input class="in" id="ad" value="'+esc(r.address)+'" oninput="D.r.address=this.value"></div><div><label class="f" for="pc">Pincode</label><input class="in" id="pc" inputmode="numeric" maxlength="6" value="'+esc(r.pincode)+'" oninput="D.r.pincode=this.value"></div></div>'+
+ '<label class="f">Day</label><div class="opts">'+days.map(function(d){return '<button class="opt '+(r.day===d?'on':'')+'" onclick="A.rset(\'day\','+d+')">'+fmtD(d).replace(/, \d{4}$/,'')+'</button>'}).join('')+'</div>'+
+ '<label class="f">Time window</label><div class="opts">'+wins.map(function(w){return '<button class="opt '+(r.win===w?'on':'')+'" onclick="A.rset(\'win\',\''+w+'\')">'+w+'</button>'}).join('')+'</div>'+
+ (r.err?'<p class="err">'+esc(r.err)+'</p>':'')+
+ '<div class="row" style="margin-top:18px"><button class="btn c" onclick="A.rbook()">Confirm visit</button><button class="btn o" onclick="A.rset(\'step\',1)">← Back</button></div><p class="tiny mut" style="margin-top:10px">The diagnosis fee is adjusted in your job price if you go ahead.</p></div>';
+}
+function vDone(id){
+ var c=S.cases[id];if(!c)return vMyCases();
+ return '<div class="card ok" style="max-width:640px"><h1>Visit booked ✓</h1><p><b>'+fmtD(c.visit.at)+', '+esc(c.visit.window)+'</b></p><p>'+esc(c.visit.expert)+', Asian Paints diagnostic expert, is coming to '+esc(c.owner.address)+'.</p><p class="small">Case <b>'+c.id+'</b> · '+esc(c.location)+'. You will get an SMS/WhatsApp update when the expert is on the way. The diagnosis report appears in your case after the visit.</p><div class="row"><a class="btn" href="#/h/case/'+c.id+'">View case</a><a class="btn o" href="#/h">Back to my cases</a></div></div>';
+}
+function vCase(id){
+ var c=S.cases[id];if(!c||c.ownerKey!=='H1')return '<div class="card">Case not found. <a href="#/h">Back</a></div>';
+ var pi=phaseIdx(c),p=partner(c.partnerId),body='';
+ // Diagnose
+ if(pi===0){body+='<div class="card soft"><h2>Diagnosis visit</h2><p><b>'+fmtD(c.visit.at)+', '+esc(c.visit.window)+'</b> · '+esc(c.visit.expert)+'</p><p class="small">The expert measures moisture, finds the root cause and writes a report. They earn nothing from what you choose next.</p></div>'}
+ if(c.audit){
+  body+='<div class="card"><div class="row sp"><h2 style="margin:0">Diagnosis report</h2><span class="chip">Signed by '+esc(c.audit.by)+'</span></div><p class="small mut">'+fmt(c.audit.at)+'</p><div class="grid g2" style="margin-top:8px"><div><p><b>Root cause:</b> '+esc(c.audit.cause)+'</p><p><b>Moisture reading:</b> '+c.audit.moist+'% (dry wall is under 12%)</p><p><b>Recommended system:</b> '+esc(c.audit.system)+'</p><details><summary>Why this system?</summary><p class="small">'+esc(SYS[c.location].why)+'</p><ol class="small">'+SYS[c.location].layers.map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ol></details></div><div><img class="illus" src="'+c.audit.photo+'" alt="Thermal scan showing trapped moisture"></div></div>';
+  if(!c.second)body+=(pi===1?'<hr><div class="row sp"><span class="small">Not sure? A different expert can check the diagnosis, free.</span><button class="btn o sm" onclick="A.second(\''+c.id+'\')">Request free second opinion</button></div>':'');
+  else body+='<hr><p class="small"><b>Second opinion</b> · '+esc(c.second.expert)+': '+(c.second.status==='Requested'?'<span class="chip a">Visit scheduled — '+fmtD(c.second.visitAt)+'</span>':c.second.status==='Confirmed'?'<span class="chip g">Confirmed the diagnosis</span>':'<span class="chip a">Revised: '+esc(c.second.note)+'</span>')+'</p>';
+  body+='</div>';
+ }
+ // Prescribe
+ if(pi===1){
+  var sel=(D.plan&&D.plan[c.id])||'Essential';var blocked=c.second&&c.second.status==='Requested';
+  body+='<div class="card"><h2>Choose your plan</h2><p class="small mut">'+c.audit.area+' sq.ft · '+esc(c.location)+' · prices include materials, certified partner, checks and warranty. GST extra.</p><div class="grid g2">'+['Basic','Essential'].map(function(pl){var on=sel===pl;return '<button class="opt '+(on?'on':'')+'" style="padding:16px" onclick="A.pickPlan(\''+c.id+'\',\''+pl+'\')"><div class="row sp"><b style="font-size:1.05rem">DryProof '+pl+'</b>'+(pl==='Essential'?'<span class="chip c">Best for recurring leaks</span>':'')+'</div><div style="font-size:1.5rem;font-weight:800;color:var(--p);margin:6px 0">'+inr(PLAN[pl].rate*c.audit.area)+'</div><div class="small">'+PLAN[pl].years+'-year warranty</div><ul class="small" style="margin:8px 0 0;padding-left:18px"><li>Independent AP diagnosis</li><li>Asian Paints materials</li><li>'+(pl==='Basic'?'Certified partner':'Certified Plus or Master partner')+'</li><li>Photo check at every stage</li>'+(pl==='Essential'?'<li><b>48-hour flood test</b></li>':'')+'<li>QR plaque + warranty passport</li></ul></button>'}).join('')+'</div>'+
+  '<p class="small" style="margin-top:12px">Status: <span class="chip a">Awaiting your acceptance</span></p>'+(blocked?'<p class="small mut">You can accept after the second opinion visit.</p>':'')+
+  '<div class="row" style="margin-top:8px"><button class="btn c" '+(blocked?'disabled':'')+' onclick="A.accept(\''+c.id+'\')">Accept DryProof '+sel+' · '+inr(PLAN[sel].rate*c.audit.area)+'</button></div><p class="tiny mut">No advance payment. You pay in two parts: after the work starts and after final checks pass.</p></div>';
+ }
+ if(c.quote&&c.quote.acceptedAt){
+  body+='<div class="card"><div class="row sp"><h2 style="margin:0">Your plan</h2><span class="chip g">Accepted '+fmtD(c.quote.acceptedAt)+'</span></div><p>DryProof '+c.quote.plan+' · '+inr(c.quote.price)+' (GST extra) · '+PLAN[c.quote.plan].years+'-year warranty</p></div>';
+  if(c.reassignPending&&!p)body+='<div class="card warn"><b>Reassignment pending.</b> Asian Paints will confirm a new partner within 24 hours.</div>';
+  if(p)body+='<div class="card"><div class="row sp"><h2 style="margin:0">Your partner</h2>'+(pi===2&&c.stages[0].status!=='Done'?'<button class="btn o sm" onclick="A.reassign(\''+c.id+'\')">Request a different partner</button>':'')+'</div><div class="row" style="margin-top:8px"><div class="ic" style="width:44px;height:44px;border-radius:12px;background:var(--pl);display:grid;place-items:center;font-weight:800;color:var(--p)">'+p.name.charAt(0)+'</div><div><b>'+esc(p.name)+'</b> <span class="chip">'+p.tier+'</span><div class="small mut">First-time-right '+p.ftr.toFixed(1)+'% · Rating '+p.rating+' · '+p.jobs+' jobs · Valid until '+fmtD(p.validUntil)+'</div></div></div></div>';
+ }
+ // Execute / Verify
+ if(pi>=2){
+  body+='<div class="card"><h2>Work record</h2><p class="small mut">Every stage is photographed on site, time-stamped and checked.</p><ul class="stages">'+c.stages.map(function(s,i){var nm=STAGES[i]+(i===5&&!PLAN[c.quote.plan].flood?' (final QC only)':'');var st=s.status==='Done'?'<span class="chip g">Done</span>':s.status==='Open'?'<span class="chip c">In progress</span>':s.status==='Redo'?'<span class="chip a">Being redone — no cost to you</span>':'<span class="chip k">Upcoming</span>';
+   var extra='';if(i===4&&s.status==='Done'&&c.cureUntil&&now()<c.cureUntil)extra='<div class="small mut">Curing — ready for final checks '+fmt(c.cureUntil)+'</div>';
+   if(i===5&&c.flood&&!c.flood.result)extra='<div class="small mut">Flood test running — result after '+fmt(c.flood.start+48*HR)+'</div>';
+   return '<li class="stg"><span class="dot '+(s.status==='Done'?'done':s.status==='Open'?'open':s.status==='Redo'?'redo':'')+'">'+(s.status==='Done'?'✓':s.n)+'</span><div style="flex:1"><div class="row"><b>'+nm+'</b>'+st+'</div>'+(s.status==='Done'?'<div class="small mut">'+fmt(s.at)+' · '+esc(s.by||'')+' · '+esc(s.gps||'')+'</div>':'')+extra+'</div>'+(s.status==='Done'&&s.photo?img(s.photo,nm+' photo'):'')+'</li>'}).join('')+'</ul></div>';
+ }
+ if(c.warranty&&c.warranty.status==='On hold'){body+='<div class="card warn"><h2>Warranty on hold</h2><p>'+esc(c.warranty.reason)+'</p><p class="small">The crew redoes this at no extra cost to you. Your warranty is issued as soon as it passes.</p></div>'}
+ // Assure
+ if(pi===4){
+  var w=c.warranty,exp=w.issuedAt+w.years*365*DAY;
+  body+='<div class="cert" style="margin-bottom:16px"><div class="seal">'+qrSVG(c.plaque)+'</div><span class="chip g">Active</span><h2 style="margin-top:8px">'+w.years+'-year DryProof warranty</h2><p>'+esc(c.location)+' · '+esc(c.owner.address)+'</p><table style="max-width:560px"><tr><th>Issued</th><td>'+fmtD(w.issuedAt)+'</td></tr><tr><th>Valid until</th><td>'+fmtD(exp)+'</td></tr><tr><th>Partner</th><td>'+esc(p.name)+' · '+p.tier+'</td></tr><tr><th>Final check</th><td>'+esc(c.qc.by)+'</td></tr><tr><th>Plaque</th><td>'+esc(c.plaque)+'</td></tr></table>'+
+  '<details style="margin-top:10px"><summary>How this warranty was decided</summary><ul class="small"><li>✓ All 6 stages on record with on-site photos</li><li>✓ Final QC signed by an Asian Paints supervisor, not the partner</li><li>'+(c.flood?(c.flood.result==='Pass'?'✓ 48-hour flood test passed':'• Flood test declined by customer — warranty set to 5 years'):'• Flood test not part of DryProof Basic')+'</li><li>The record decides the warranty. Nobody can type it in or override it.</li></ul><p class="tiny">Covered: leaks through the treated area from workmanship or material. Not covered: new structural cracks, damage by others, areas not treated.</p></details>'+
+  '<div class="row" style="margin-top:12px"><a class="btn" href="#/verify/'+c.plaque+'">Open warranty passport</a><a class="btn c" href="#/h/case/'+c.id+'/complaint">Raise a complaint</a></div></div>';
+ }
+ // Complaints
+ var cl=claimsFor(c.id);
+ if(cl.length)body+='<div class="card" id="complaints"><h2>Complaints</h2>'+cl.map(claimTracker).join('<hr>')+'</div>';
+ return '<p class="small"><a href="#/h">← My cases</a></p><div class="card"><div class="row sp"><div><h1 style="margin:0">'+c.id+' · '+esc(c.location)+'</h1><p class="mut small" style="margin:0">'+esc(c.owner.address)+' · reported '+fmtD(c.createdAt)+'</p></div><span class="chip">'+esc(statusText(c))+'</span></div>'+phaseBar(c)+'</div>'+body;
+}
+function claimTracker(k){
+ var steps=['Raised','Linked','Visit','Decided','Closed'];
+ var idx=k.status==='Closed'?4:k.cause?3:k.visitAt?2:1;
+ var due=k.raisedAt+48*HR;
+ var out='<div id="'+k.id+'"><div class="row sp"><b>'+k.id+' · '+esc(k.severity)+'</b><span class="small mut">Raised '+fmt(k.raisedAt)+'</span></div><div class="phases">'+steps.map(function(s,i){var cl=i<idx||(idx===4)?'done':i===idx?'cur':'';return '<div class="ph '+cl+'"><i>'+(cl==='done'?'✓':i+1)+'</i>'+s+'</div>'}).join('')+'</div>';
+ out+='<p class="small">'+esc(k.desc)+'</p>';
+ if(!k.visitAt&&k.status!=='Closed')out+='<p class="small">Visit by '+esc(PEOPLE.claims)+' before <b>'+fmt(due)+'</b>. '+escalation(k)+'</p>';
+ if(k.visitAt&&!k.cause)out+='<p class="small">Site visit done '+fmt(k.visitAt)+'. Decision in progress. '+escalation(k)+'</p>';
+ if(k.cause){out+='<p class="small"><b>Decision by Asian Paints:</b> '+esc(k.cause)+' — '+esc(k.reason)+'</p>';
+  if(k.cause==='Workmanship')out+='<p class="small">The partner fixes this at their own cost. Nothing to pay for you.</p>';
+  if(k.cause==='Material')out+='<p class="small">Asian Paints fixes this at its cost.</p>';
+  if(k.cause==='Outside job scope')out+='<p class="small">This area was not part of the treated work, so it is not covered. Our expert can quote it separately.</p>'}
+ if(k.fixedAt&&k.status!=='Closed')out+='<div class="row"><span class="chip g">Fixed '+fmt(k.fixedAt)+'</span><button class="btn g sm" onclick="A.confirmFix(\''+k.id+'\')">Confirm it is fixed</button></div>';
+ if(k.cause==='Outside job scope'&&k.status!=='Closed')out+='<button class="btn o sm" onclick="A.confirmFix(\''+k.id+'\')">Got it — close complaint</button>';
+ if(k.status==='Closed')out+='<span class="chip g">Closed '+fmt(k.closedAt)+'</span>';
+ return out+'</div>';
+}
+function vComplaint(id){
+ var c=S.cases[id];if(!c)return '';
+ var f=D.cf&&D.cf.id===id?D.cf:(D.cf={id:id,where:'Same area as the treated work',noticed:'',severity:'',desc:'',photo:null,err:''});
+ var today=new Date(now()).toISOString().slice(0,10);
+ return '<p class="small"><a href="#/h/case/'+id+'">← Back to '+id+'</a></p><div class="card" style="max-width:720px"><h1>Raise a complaint</h1><p class="small mut">Linked to '+id+' · plaque '+esc(c.plaque||'')+'. An Asian Paints engineer — not the partner — decides the cause. Visit within 48 hrs.</p>'+
+ '<label class="f" for="wh">Where on site?</label><select class="in" id="wh" onchange="D.cf.where=this.value">'+['Same area as the treated work','Nearby, outside the treated area','Somewhere else in the home'].map(function(o){return '<option'+(f.where===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select>'+
+ '<div class="grid g2"><div><label class="f" for="nt">First noticed</label><input class="in" type="date" id="nt" max="'+today+'" value="'+f.noticed+'" onchange="D.cf.noticed=this.value"></div><div><label class="f">How bad is it?</label><div class="opts">'+['Minor damp patch','Active drip','Severe — water flowing'].map(function(s){return '<button class="opt '+(f.severity===s?'on':'')+'" onclick="D.cf.severity=\''+s+'\';A.r()">'+s+'</button>'}).join('')+'</div></div></div>'+
+ '<label class="f" for="cd">Describe the problem</label><textarea class="in" id="cd" oninput="D.cf.desc=this.value">'+esc(f.desc)+'</textarea>'+
+ '<label class="f">Photo (optional)</label><div class="row">'+(f.photo?img(f.photo,'Complaint photo'):'')+'<label class="btn o sm" style="cursor:pointer">'+(f.photo?'Change photo':'+ Add photo')+'<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.cfPhoto(this)"></label></div>'+
+ (f.err?'<p class="err">'+esc(f.err)+'</p>':'')+'<div class="row" style="margin-top:16px"><button class="btn c" onclick="A.raise(\''+id+'\')">Submit complaint</button><a class="btn o" href="#/h/case/'+id+'">Cancel</a></div></div>';
+}
+function vAsk(){
+ var cs=myCases();var cid=(D.askCase&&S.cases[D.askCase])?D.askCase:(cs[0]&&cs[0].id);
+ var chips=['Where is my complaint?','Is this damp patch covered?','When is the engineer coming?','Who is my partner?','How long is my warranty?'];
+ return '<div class="card" style="max-width:760px"><div class="row sp"><h1 style="margin:0">Ask DryProof</h1><select class="in" style="width:auto" aria-label="Case" onchange="D.askCase=this.value;A.r()">'+cs.map(function(c){return '<option value="'+c.id+'"'+(c.id===cid?' selected':'')+'>'+c.id+' · '+esc(c.location)+'</option>'}).join('')+'</select></div><p class="small mut">Answers come from your job record, 24×7. For anything else, an Asian Paints expert takes over. A person, not the bot, decides fault.</p>'+
+ '<div class="chat" id="chat">'+(S.chat.length?S.chat.map(function(m){return '<div class="msg '+m.f+'">'+esc(m.t)+'</div>'}).join(''):'<div class="msg b">Hi Ananya, ask me about your job, your warranty or a complaint.</div>')+'</div>'+
+ '<div class="opts" style="margin:10px 0">'+chips.map(function(q){return '<button class="opt" onclick="A.ask(\''+q+'\')">'+q+'</button>'}).join('')+'</div>'+
+ '<form class="row" onsubmit="event.preventDefault();A.ask(this.m.value)"><label class="sr" for="m">Message</label><input class="in" id="m" name="m" placeholder="Type your question" style="flex:1;min-width:200px" autocomplete="off"><button class="btn">Send</button>'+(S.chat.length?'<button type="button" class="btn o" onclick="S.chat=[];save();A.r()">Clear</button>':'')+'</form></div>';
+}
+function answer(q,c){
+ q=q.toLowerCase();var k=claimsFor(c.id)[0],p=partner(c.partnerId),w=c.warranty;
+ if(/complain|claim|ticket/.test(q)){if(!k)return 'You have no complaints on '+c.id+'. If something is wrong, open the case and tap "Raise a complaint".';var st=k.status==='Closed'?'closed on '+fmt(k.closedAt):k.cause?'decided: '+k.cause+(k.fixedAt?', fixed on '+fmt(k.fixedAt)+' — please confirm in the app':''):k.visitAt?'visited on '+fmt(k.visitAt)+', decision in progress':'waiting for the site visit, due before '+fmt(k.raisedAt+48*HR);return 'Complaint '+k.id+' is '+st+'.'}
+ if(/cover|damp|patch|stain/.test(q)){if(!w||w.status!=='Active')return 'Your warranty starts when the final checks pass. Until then, the partner and Asian Paints are responsible for the work in progress.';return 'Your '+w.years+'-year warranty covers leaks through the treated '+c.location.toLowerCase()+' caused by workmanship or material. It does not cover new structural cracks, damage by others or areas that were not treated. If the patch is near the treated area, raise a complaint — an AP engineer will check it within 48 hrs.'}
+ if(/engineer|visit|come|when/.test(q)){if(k&&!k.visitAt&&k.status!=='Closed')return PEOPLE.claims+' will visit for '+k.id+' before '+fmt(k.raisedAt+48*HR)+'.';if(!c.audit&&c.visit)return c.visit.expert+' is coming on '+fmtD(c.visit.at)+', '+c.visit.window+'.';var nx=c.stages.findIndex(function(s){return s.status!=='Done'});if(nx>=0&&p)return p.name+' is working on: '+STAGES[nx]+'.';return 'No visit is scheduled right now.'}
+ if(/partner|crew|applicator|who/.test(q)){return p?p.name+' ('+p.tier+') — first-time-right '+p.ftr.toFixed(1)+'%, rating '+p.rating+', '+p.jobs+' jobs.':'A partner is matched when you accept a plan.'}
+ if(/warranty|long|year|expire|valid/.test(q)){return w&&w.status==='Active'?'Your warranty is '+w.years+' years, valid until '+fmtD(w.issuedAt+w.years*365*DAY)+'. Plaque '+c.plaque+'.':'Your warranty is issued automatically once all stages are on record and final checks pass.'}
+ return 'I have passed this to an Asian Paints expert. They will reply within 4 business hours.';
+}
+function vCircle(){
+ var ci=S.circle,hasJob=myCases().some(function(c){return c.quote&&c.quote.acceptedAt});
+ return '<div class="row sp" style="margin-bottom:10px"><div><h1 style="margin:0">DryProof Circle</h1><p class="mut" style="margin:0">A free community for homeowners — answers from Asian Paints experts and verified DryProof homes.</p></div>'+(ci.joined?'<span class="chip g">Circle member</span>':'<button class="btn c" onclick="A.join()">Join Circle — free</button>')+'</div>'+
+ '<div class="grid g2"><div class="card"><h3>Pre-monsoon reminder</h3><p class="small mut">We remind you to book a check before the rains.</p>'+(ci.reminder?'<p><span class="chip g">Reminder set for '+ci.reminder+'</span></p><button class="btn o sm" onclick="S.circle.reminder=null;save();A.r()">Turn off</button>':'<div class="row"><select class="in" id="rm" style="width:auto">'+['March','April','May'].map(function(m){return '<option>'+m+'</option>'}).join('')+'</select><button class="btn sm" onclick="A.remind()">Remind me</button></div>')+'</div>'+
+ '<div class="card"><h3>Priority service</h3>'+(hasJob?'<p class="small"><span class="chip g">Priority service</span> As a DryProof customer, your bookings go to the front of the queue.</p><a class="btn sm" href="#/h/new?priority=1" onclick="D.r={_new:true}">Book a priority check</a>':'<p class="small mut">Available once you have a DryProof job.</p>')+'</div></div>'+
+ '<div class="card"><div class="row sp"><h2 style="margin:0">Community Q&amp;A</h2></div>'+ci.questions.map(function(x){return '<div style="padding:12px 0;border-bottom:1px solid var(--b)"><b>'+esc(x.q)+'</b><div class="tiny mut">'+esc(x.by)+'</div>'+(x.a?'<p class="small" style="margin-top:6px">'+esc(x.a)+' <span class="chip">'+esc(x.ab)+'</span></p>':'<p class="small"><span class="chip a">Awaiting an expert answer</span></p>')+'</div>'}).join('')+
+ '<form onsubmit="event.preventDefault();A.askCircle(this.cq.value)" style="margin-top:12px"><label class="f" for="cq">Ask the community</label><div class="row"><input class="in" id="cq" name="cq" style="flex:1;min-width:200px" placeholder="Your question"><button class="btn">Post</button></div></form></div>'+
+ '<h2>Guides</h2>'+[['How to spot seepage early','Look for bubbling paint, white salt marks and musty corners. A damp patch that grows after rain usually means water is travelling from outside.'],['Terrace care before the monsoon','Clear drains and outlets, remove debris, check parapet joints and do not let water pond. Book a check in March–April when the surface is dry.'],['What is a flood test?','The treated terrace is filled with a few centimetres of water for 48 hours. If nothing shows below, the membrane holds. It is the proof behind a 10-year warranty.'],['Reading your warranty passport','Scan the QR plaque: you see each stage with its date and photo, who checked the work, the flood test result and how long you are covered.']].map(function(g){return '<details><summary>'+g[0]+'</summary><p class="small">'+g[1]+'</p></details>'}).join('');
+}
+
+/* ================= PARTNER ================= */
+function myJobs(){return Object.values(S.cases).filter(function(c){return c.partnerId===S.session.pid&&!c.sample})}
+function nextTask(c){
+ var i=c.stages.findIndex(function(s){return s.status==='Open'||s.status==='Redo'});
+ if(i>=0&&i<5)return (c.stages[i].status==='Redo'?'Redo: ':'Sign off: ')+STAGES[i];
+ if(stagesDone(c,5)&&(!c.warranty||c.warranty.status!=='Active'))return 'Waiting for AP final checks';
+ if(c.warranty&&c.warranty.status==='Active')return 'Completed';
+ return 'Starts soon';
+}
+function vJobs(){
+ var p=partner(S.session.pid),jobs=myJobs();
+ var fixes=Object.values(S.claims).filter(function(k){var c=S.cases[k.caseId];return c&&c.partnerId===p.id&&k.cause==='Workmanship'&&!k.fixedAt});
+ var active=jobs.filter(function(c){return !(c.warranty&&c.warranty.status==='Active')}),done=jobs.filter(function(c){return c.warranty&&c.warranty.status==='Active'});
+ return '<div class="row sp" style="margin-bottom:12px"><div><h1 style="margin:0">My jobs</h1><p class="mut" style="margin:0">'+esc(p.name)+' · <span class="chip">'+p.tier+'</span></p></div></div>'+
+ (fixes.length?'<div class="card bad"><h2>Complaint fixes assigned to you</h2>'+fixes.map(function(k){return '<div class="list-item"><div><b>'+k.id+'</b> · '+k.caseId+'<div class="small">'+esc(k.reason)+'</div></div><a class="btn c sm" href="#/p/job/'+k.caseId+'">Open</a></div>'}).join('')+'</div>':'')+
+ '<h2>Active</h2>'+(active.length?active.map(jobRow).join(''):'<div class="card mut">No active jobs. New jobs appear here when a homeowner accepts a plan.</div>')+
+ (done.length?'<details><summary>Completed ('+done.length+')</summary>'+done.map(jobRow).join('')+'</details>':'');
+}
+function jobRow(c){var t=nextTask(c);return '<div class="list-item"><div><div class="row"><b>'+c.id+'</b><span class="chip">'+c.quote.plan+'</span>'+(/^(Sign off|Redo)/.test(t)?'<span class="chip c">Action needed</span>':'')+'</div><div class="small">'+esc(c.location)+' · '+c.area+' sq.ft · '+esc(c.owner.address)+'</div><div class="small mut">'+esc(t)+'</div></div><a class="btn sm" href="#/p/job/'+c.id+'">Open</a></div>'}
+function vJob(id){
+ var c=S.cases[id];if(!c||c.partnerId!==S.session.pid)return '<div class="card">Job not found. <a href="#/p">Back</a></div>';
+ var nx=c.stages.findIndex(function(s){return s.status==='Open'||s.status==='Redo'});
+ var fixes=Object.values(S.claims).filter(function(k){return k.caseId===id&&k.cause==='Workmanship'&&!k.fixedAt});
+ var html='<p class="small"><a href="#/p">← My jobs</a></p><div class="card"><div class="row sp"><div><h1 style="margin:0">'+c.id+' · '+esc(c.location)+'</h1><p class="small mut" style="margin:0">'+esc(c.owner.name)+' · '+esc(c.owner.address)+' · '+c.area+' sq.ft · DryProof '+c.quote.plan+'</p></div><span class="chip">'+esc(nextTask(c))+'</span></div>'+
+ '<details style="margin-top:12px"><summary>Spec: '+esc(c.audit.system)+'</summary><ol class="small">'+SYS[c.location].layers.map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ol><p class="tiny mut">Materials are supplied by Asian Paints to the site.</p></details></div>';
+ if(fixes.length)html+='<div class="card bad"><h2>Complaint fix</h2>'+fixes.map(function(k){var ph=D.fix&&D.fix[k.id];return '<p><b>'+k.id+'</b> · '+esc(k.reason)+'</p><p class="small">Fix at your cost — the cost comes from the monsoon holdback if not done.</p><div class="row">'+(ph?img(ph,'Fix photo'):'')+'<label class="btn o sm" style="cursor:pointer">'+(ph?'Retake':'Take fix photo')+'<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.fixPhoto(\''+k.id+'\',this)"></label>'+(S.allowSample?'<button class="btn o sm" onclick="A.fixSample(\''+k.id+'\')">Use sample photo</button>':'')+'<button class="btn c sm" '+(ph?'':'disabled')+' onclick="A.fixDone(\''+k.id+'\')">Mark fix done</button></div>'}).join('')+'</div>';
+ html+='<div class="card"><h2>Stage checklist</h2><p class="small mut">One stage at a time. A live photo is required for each sign-off. Final QC is signed by an Asian Paints supervisor.</p><ul class="stages">'+c.stages.map(function(s,i){
+  var nm=STAGES[i]+(i===5&&!PLAN[c.quote.plan].flood?' (final QC)':'');
+  var body='';
+  if(s.status==='Done')body='<div class="small mut">Signed '+fmt(s.at)+' · '+esc(s.gps||'')+'</div>';
+  else if(i===nx&&i<5){var ph=D.sp&&D.sp[c.id+'-'+i];
+   var early=i===4?'':'';
+   body='<div class="row" style="margin-top:6px">'+(ph?img(ph,'Stage photo'):'')+'<label class="btn o sm" style="cursor:pointer">📷 '+(ph?'Retake photo':'Take photo')+'<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.stagePhoto(\''+c.id+'\','+i+',this)"></label>'+(S.allowSample?'<button class="btn o sm" onclick="A.stageSample(\''+c.id+'\','+i+')">Use sample photo</button>':'')+'<button class="btn c sm" '+(ph?'':'disabled')+' onclick="A.signStage(\''+c.id+'\','+i+')">Sign off stage</button></div>'+(s.status==='Redo'?'<p class="small" style="color:var(--a)">Redo required after a failed check — no cost to the customer.</p>':'')+(ph?'':'<p class="tiny mut">Photo needed before sign-off.</p>')}
+  else if(i===5)body='<div class="small mut">🔒 Signed only by an AP QC supervisor'+(c.cureUntil&&stagesDone(c,5)?' · cure ends '+fmt(c.cureUntil):'')+'</div>';
+  else body='<div class="small mut">🔒 Opens after the previous stage</div>';
+  return '<li class="stg"><span class="dot '+(s.status==='Done'?'done':i===nx?'open':s.status==='Redo'?'redo':'')+'">'+(s.status==='Done'?'✓':s.n)+'</span><div style="flex:1"><b>'+nm+'</b>'+body+'</div>'+(s.status==='Done'&&s.photo?img(s.photo,nm):'')+'</li>'}).join('')+'</ul></div>';
+ return html;
+}
+function vEarnings(){
+ var p=partner(S.session.pid),t=TIER[p.tier],jobs=myJobs().filter(function(c){return c.quote&&c.quote.acceptedAt});
+ var rel=0,held=0,pend=0;
+ var rows=jobs.map(function(c){var amt=payout(c),st,stc;
+  var done=c.qc&&c.qc.pass&&c.warranty&&c.warranty.status==='Active';
+  if(done){rel+=amt*.9;held+=amt*.1;st='Released '+inr(amt*.9)+' · '+inr(amt*.1)+' held until after monsoon';stc='g'}
+  else if(c.stages[0].status==='Done'){pend+=amt;st='Pending AP final checks';stc='a'}
+  else {st='Not started — no payout yet';stc='k'}
+  return '<tr><td><b>'+c.id+'</b><div class="tiny mut">'+esc(c.location)+'</div></td><td>'+c.area+' sq.ft</td><td>'+inr(amt)+'</td><td><span class="chip '+stc+'">'+st+'</span>'+(done?'<div class="tiny mut">+5% bonus ('+inr(amt*.05)+') if dry after monsoon</div>':'')+'</td></tr>'}).join('');
+ return '<h1>My earnings</h1><div class="grid g3" style="margin-bottom:16px"><div class="kpi"><b>'+inr(rel)+'</b><span>Released</span></div><div class="kpi"><b>'+inr(held)+'</b><span>Held until after monsoon</span></div><div class="kpi"><b>'+inr(pend)+'</b><span>Pending final checks</span></div></div>'+
+ '<div class="card"><h2>Job payouts</h2><div class="tw"><table><thead><tr><th>Job</th><th>Area</th><th>Payout</th><th>Status</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4" class="mut">No jobs yet.</td></tr>')+'</tbody></table></div><p class="tiny mut" style="margin-top:8px">Payout is released 4 hours after the AP supervisor signs final QC. Asian Paints supplies all materials on DryProof jobs — you are paid for labour. No commission is taken.</p></div>'+
+ '<div class="card soft"><h2>Your '+p.tier+' benefits</h2><div class="grid g3"><div><b>'+inr(t.rate)+' / sq.ft</b><div class="small mut">Payout on DryProof jobs</div></div><div><b>'+t.disc+' off</b><div class="small mut">Asian Paints material for your own jobs</div></div><div><b>'+t.credit+' days</b><div class="small mut">Credit on material</div></div></div></div>';
+}
+function vTier(){
+ var p=partner(S.session.pid),ranks=['Certified','Certified Plus','Master'];
+ var req={'Certified':['Training + 5 supervised jobs','First-time-right ≥90%'],'Certified Plus':['First-time-right ≥95%','50+ DryProof jobs','Flood testing module'],'Master':['First-time-right ≥98%','150+ DryProof jobs','All modules 100%','No workmanship complaints in 12 months']};
+ return '<h1>Tier &amp; training</h1><div class="grid g4" style="margin-bottom:16px"><div class="kpi"><b>'+p.ftr.toFixed(1)+'%</b><span>First-time-right</span></div><div class="kpi"><b>'+p.rating+'</b><span>Rating</span></div><div class="kpi"><b>'+p.jobs+'</b><span>Jobs done</span></div><div class="kpi"><b>'+p.complaints+'</b><span>Workmanship complaints (12 mo)</span></div></div>'+
+ '<div class="grid g3">'+ranks.map(function(r){var cur=r===p.tier;return '<div class="card '+(cur?'soft':'')+'"><div class="row sp"><h3 style="margin:0">'+r+'</h3>'+(cur?'<span class="chip g">You</span>':'')+'</div><p class="small"><b>'+inr(TIER[r].rate)+'/sq.ft</b> · '+TIER[r].disc+' material discount · '+TIER[r].credit+'-day credit</p><ul class="small" style="padding-left:18px;margin:0">'+req[r].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></div>'}).join('')+'</div>'+
+ '<div class="card"><h2>Training modules</h2>'+p.modules.map(function(m){return '<div style="margin-bottom:10px"><div class="row sp small"><span>'+esc(m[0])+'</span><b>'+m[1]+'%</b></div><div class="bar"><div style="width:'+m[1]+'%"></div></div></div>'}).join('')+'<p class="small mut">Certification valid until <b>'+fmtD(p.validUntil)+'</b>. Recertification: a supervised job and a short test in the month before.</p><p class="tiny mut">Your tier is reviewed every 6 months. One bad job never decides a tier — only repeated issues do.</p></div>';
+}
+
+/* ================= BUILDER ================= */
+function vProjects(){
+ return '<div class="row sp" style="margin-bottom:12px"><div><h1 style="margin:0">My projects</h1><p class="mut" style="margin:0">Joshi Developers · Kavya Joshi, Architect</p></div><a class="btn" href="#/b/spec">+ New project spec</a></div>'+
+ Object.values(S.projects).map(function(pr){var done=pr.flats.filter(function(f){return f.stages===6}).length;return '<div class="list-item"><div><div class="row"><b>'+esc(pr.name)+'</b><span class="chip">'+esc(pr.phase)+'</span></div><div class="small">'+esc(pr.location)+' · '+pr.flatsCount+' flats · '+pr.storeys+' storeys</div><div class="small mut">'+done+' of '+pr.flatsCount+' flats handed over with a record</div></div><a class="btn sm" href="#/b/project/'+pr.id+'">Open</a></div>'}).join('');
+}
+function vProject(id){
+ var pr=S.projects[id];if(!pr)return '';var pp=partner(pr.partnerId);
+ var done=pr.flats.filter(function(f){return f.stages===6}).length;
+ return '<p class="small"><a href="#/b">← My projects</a></p><div class="card"><div class="row sp"><div><h1 style="margin:0">'+esc(pr.name)+'</h1><p class="small mut" style="margin:0">'+esc(pr.location)+' · '+pr.flatsCount+' flats · Partner: '+esc(pp.name)+' ('+pp.tier+')</p></div><span class="chip">'+esc(pr.phase)+'</span></div>'+
+ '<div class="grid g4" style="margin-top:14px">'+pr.elements.map(function(e){return '<div class="kpi"><b style="font-size:1.05rem">'+e.name+'</b><span>'+e.area.toLocaleString('en-IN')+' sq.ft</span><div class="small" style="margin-top:6px">'+esc(e.status)+'</div></div>'}).join('')+'</div>'+
+ '<p class="small" style="margin-top:12px">Complaint response target: <b>48 hrs</b> · Project Assurance (extended warranty) available from Year 2.</p></div>'+
+ '<div class="card"><div class="row sp"><h2 style="margin:0">Wet areas · stage checks by flat</h2><span class="small">'+done+'/'+pr.flatsCount+' verified</span></div><div class="bar" style="margin:10px 0 14px"><div style="width:'+Math.round(done/pr.flatsCount*100)+'%;background:var(--g)"></div></div><div class="tw"><table><thead><tr><th>Flat</th><th>Stages</th><th>Status</th><th></th></tr></thead><tbody>'+pr.flats.map(function(f){return '<tr><td><b>'+f.flat+'</b></td><td><div class="bar" style="width:120px"><div style="width:'+Math.round(f.stages/6*100)+'%"></div></div><span class="tiny">'+f.stages+'/6</span></td><td>'+(f.stages===6?'<span class="chip g">Handed over '+fmtD(f.handedAt)+'</span>':f.stages===5?'<span class="chip a">Awaiting AP final QC</span>':'<span class="chip">In progress</span>')+'</td><td>'+(f.plaque?'<a class="btn o sm" href="#/b/flat/'+pr.id+'/'+f.flat+'">Handover record</a>':'')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+}
+function vFlat(pid,fl){
+ var pr=S.projects[pid];if(!pr)return '';var f=pr.flats.find(function(x){return x.flat===fl});if(!f)return '';var pp=partner(pr.partnerId);
+ var base=f.handedAt-6*DAY;
+ return '<p class="small"><a href="#/b/project/'+pid+'">← '+esc(pr.name)+'</a></p><div class="card"><div class="row sp" style="align-items:flex-start"><div><span class="chip g">Handover record</span><h1 style="margin-top:8px">'+esc(pr.name)+' · '+f.flat+'</h1><p class="small mut">Plaque '+f.plaque+' · give this to the flat buyer</p></div>'+qrSVG(f.plaque)+'</div><ul class="stages">'+STAGES.map(function(s,i){return '<li class="stg"><span class="dot done">✓</span><div style="flex:1"><b>'+s+'</b><div class="small mut">'+fmt(base+i*20*HR)+' · '+(i===5?esc(PEOPLE.qc):esc(pp.name))+'</div></div>'+img(STAGE_ILL[i],s)+'</li>'}).join('')+'</ul><div class="row" style="margin-top:12px"><a class="btn" href="#/verify/'+f.plaque+'">Open public record</a><button class="btn o" onclick="window.print()">Print for buyer</button></div></div>';
+}
+function specCalc(sp){
+ var rows=[],total=0;
+ ['Terrace','Wet areas','Basement','Water tanks'].forEach(function(el){if(!sp.el[el])return;var a=Math.max(0,parseInt(sp.area[el])||0);if(!a)return;total+=a*B2B_RATE[el];
+  var key=el==='Wet areas'?'Bathroom':el;var s=SYS[key];var layers=s.layers.slice();
+  if(sp.exposure==='High water table'&&el==='Basement')layers.splice(2,0,'Extra PU injection at every joint and pipe sleeve');
+  if(sp.exposure==='Heavy rainfall'&&el==='Terrace')layers.push('Extra coat at parapets, drains and outlets');
+  if(sp.exposure==='Coastal'&&(el==='Terrace'))layers.push('Chloride-resistant UV top coat');
+  if(sp.cls==='Commercial'&&el==='Terrace')layers.push('Traffic-grade top coat for foot traffic');
+  rows.push({el:el,area:a,sys:s.name,layers:layers})});
+ return {rows:rows,total:total};
+}
+function vSpec(){
+ var sp=D.spec||(D.spec={name:'Sai Heights Phase 2',cls:'Residential apartments',exposure:'Heavy rainfall',el:{'Terrace':true,'Wet areas':true,'Basement':true,'Water tanks':true},area:{'Terrace':6000,'Wet areas':3840,'Basement':10000,'Water tanks':1500}});
+ var r=specCalc(sp);
+ return '<h1>New project spec</h1><p class="mut">Phase 1: advisory-first spec, Asian Paints systems and certified Master crews. Phase 2 (from Year 2): stage checks and Project Assurance.</p><div class="grid g2"><div class="card noprint"><label class="f" for="pn">Project name</label><input class="in" id="pn" value="'+esc(sp.name)+'" oninput="D.spec.name=this.value">'+
+ '<label class="f" for="cls">Project type</label><select class="in" id="cls" onchange="D.spec.cls=this.value;A.r()">'+['Residential apartments','Villas','Commercial'].map(function(o){return '<option'+(sp.cls===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select>'+
+ '<label class="f" for="ex">Site exposure</label><select class="in" id="ex" onchange="D.spec.exposure=this.value;A.r()">'+['Normal','Heavy rainfall','Coastal','High water table'].map(function(o){return '<option'+(sp.exposure===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select>'+
+ '<label class="f">Areas to waterproof (sq.ft)</label>'+['Terrace','Wet areas','Basement','Water tanks'].map(function(el){return '<div class="row" style="margin-bottom:6px"><label style="width:130px" class="row"><input type="checkbox" '+(sp.el[el]?'checked':'')+' onchange="D.spec.el[\''+el+'\']=this.checked;A.r()"> '+el+'</label><input class="in" style="width:140px" inputmode="numeric" aria-label="'+el+' area" value="'+(sp.area[el]||'')+'" onchange="D.spec.area[\''+el+'\']=this.value.replace(/\\D/g,\'\');A.r()" '+(sp.el[el]?'':'disabled')+'></div>'}).join('')+'</div>'+
+ '<div class="card"><div class="row sp"><h2 style="margin:0">'+esc(sp.name)+'</h2><span class="chip">'+esc(sp.cls)+' · '+esc(sp.exposure)+'</span></div>'+
+ '<div class="tw" style="margin-top:10px"><table><thead><tr><th>Area</th><th>Quantity</th><th>System</th></tr></thead><tbody>'+(r.rows.map(function(x){return '<tr><td><b>'+x.el+'</b></td><td>'+x.area.toLocaleString('en-IN')+' sq.ft</td><td>'+esc(x.sys)+'<ol class="tiny" style="margin:4px 0 0;padding-left:16px">'+x.layers.map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ol></td></tr>'}).join('')||'<tr><td colspan="3" class="mut">Select at least one area.</td></tr>')+'</tbody></table></div>'+
+ '<div class="grid g2" style="margin-top:12px"><div class="kpi"><b>'+inr(r.total)+'</b><span>Project quote · Phase 1 (GST extra)</span></div><div class="kpi"><b>+ '+inr(r.total*.05)+'</b><span>Add stage checks + Project Assurance (Year 2+)</span></div></div>'+
+ '<p class="tiny mut">Standards: IS 3067, BS 8102 (below-ground). Partner crews: Master tier.</p><div class="row noprint" style="margin-top:10px"><button class="btn" onclick="window.print()">Download spec (PDF)</button><a class="btn c" href="#/b/audit?project='+encodeURIComponent(sp.name)+'">Request a site audit</a></div></div></div>';
+}
+function vAudit(q){
+ if(D.auditDone)return '<div class="card ok" style="max-width:640px"><h1>Site audit requested ✓</h1><p>Request <b>'+D.auditDone+'</b>. An Asian Paints projects engineer will call within 1 working day to fix a date.</p><div class="row"><a class="btn" href="#/b" onclick="D.auditDone=null">Back to my projects</a></div></div>';
+ return '<div class="card" style="max-width:720px"><h1>Request a site audit</h1><p class="small mut">An Asian Paints projects engineer visits the site, checks drawings and writes the spec. Free for projects at design stage.</p><label class="f" for="ap">Project</label><input class="in" id="ap" value="'+esc(q.get('project')||'Sai Heights Phase 2')+'"><label class="f" for="al">Site location</label><input class="in" id="al" value="Baner, Pune"><div class="grid g2"><div><label class="f" for="as">Project stage</label><select class="in" id="as"><option>Design</option><option>Tender</option><option>Under construction</option></select></div><div><label class="f" for="ad2">Preferred date</label><input class="in" type="date" id="ad2" value="'+new Date(nextDays(3)[2]).toISOString().slice(0,10)+'"></div></div><div class="row" style="margin-top:16px"><button class="btn c" onclick="A.audit()">Request site audit</button><a class="btn o" href="#/b">Cancel</a></div></div>';
+}
+function vBComplaint(){
+ var pr=S.projects['PRJ-201'];var b=D.bc||(D.bc={flat:pr.flats[0].flat,desc:'',err:''});
+ var mine=Object.values(S.claims).filter(function(k){return k.projectId});
+ return '<div class="card" style="max-width:720px"><h1>Raise a complaint</h1><p class="small mut">Goes straight to an Asian Paints engineer. Visit within 48 hrs.</p><label class="f" for="bf">Project · flat</label><select class="in" id="bf" onchange="D.bc.flat=this.value">'+pr.flats.filter(function(f){return f.plaque}).map(function(f){return '<option'+(b.flat===f.flat?' selected':'')+' value="'+f.flat+'">'+esc(pr.name)+' · '+f.flat+'</option>'}).join('')+'</select><label class="f" for="bd">What is the problem?</label><textarea class="in" id="bd" oninput="D.bc.desc=this.value">'+esc(b.desc)+'</textarea>'+(b.err?'<p class="err">'+esc(b.err)+'</p>':'')+'<div class="row" style="margin-top:14px"><button class="btn c" onclick="A.bRaise()">Submit complaint</button></div></div>'+
+ (mine.length?'<div class="card"><h2>Project complaints</h2>'+mine.map(function(k){return '<div class="list-item"><div><b>'+k.id+'</b> · '+esc(k.flat)+'<div class="small">'+esc(k.desc)+'</div></div><span class="chip '+(k.status==='Closed'?'g':'a')+'">'+(k.status==='Closed'?'Closed':k.cause?'Decided: '+esc(k.cause):k.visitAt?'Visited':'Visit due '+fmt(k.raisedAt+48*HR))+'</span></div>'}).join('')+'</div>':'');
+}
+
+/* ================= ASIAN PAINTS TEAM ================= */
+function liveCases(){return Object.values(S.cases).filter(function(c){return !c.sample})}
+function vDiag(){
+ var visits=liveCases().filter(function(c){return !c.audit&&c.visit}).sort(function(a,b){return (b.priority-a.priority)||(a.visit.at-b.visit.at)});
+ var seconds=liveCases().filter(function(c){return c.second&&c.second.status==='Requested'});
+ return '<h1>Diagnosis queue</h1><p class="mut">Visits for Asian Paints diagnostic experts. The expert never sells or does the work.</p>'+
+ '<div class="card"><h2>Diagnosis visits</h2>'+(visits.length?visits.map(function(c){return '<div class="list-item"><div><div class="row"><b>'+c.id+'</b>'+(c.priority?'<span class="chip c">Priority</span>':'')+(c.recurrence!=='First time'?'<span class="chip a">'+esc(c.recurrence)+'</span>':'')+'</div><div class="small">'+esc(c.location)+' · '+esc(c.owner.address)+'</div><div class="small mut">'+fmtD(c.visit.at)+', '+esc(c.visit.window)+'</div></div><a class="btn sm" href="#/ap/diag/'+c.id+'">Open</a></div>'}).join(''):'<p class="mut">No visits waiting.</p>')+'</div>'+
+ '<div class="card"><h2>Second opinions</h2>'+(seconds.length?seconds.map(function(c){return '<div class="list-item"><div><b>'+c.id+'</b> · '+esc(c.location)+'<div class="small mut">Original by '+esc(c.audit.by)+' · reviewer '+esc(c.second.expert)+'</div></div><a class="btn sm" href="#/ap/diag/'+c.id+'/second">Review</a></div>'}).join(''):'<p class="mut">No second opinions waiting.</p>')+'</div>';
+}
+function vDiagItem(id,mode){
+ var c=S.cases[id];if(!c)return '';
+ if(mode==='second'){return '<p class="small"><a href="#/ap/diag">← Diagnosis queue</a></p><div class="card"><h1>Second opinion · '+c.id+'</h1><p class="small mut">Reviewer: '+esc(c.second.expert)+'. You review the diagnosis only — not the product or the price.</p><p><b>Original root cause:</b> '+esc(c.audit.cause)+'</p><p><b>Moisture:</b> '+c.audit.moist+'%</p><label class="f" for="rv">If you disagree, write the corrected root cause</label><textarea class="in" id="rv"></textarea><div class="row" style="margin-top:14px"><button class="btn g" onclick="A.secondDecide(\''+id+'\',true)">Confirm diagnosis</button><button class="btn o" onclick="A.secondDecide(\''+id+'\',false)">Revise diagnosis</button></div></div>'}
+ var s=SYS[c.location];
+ return '<p class="small"><a href="#/ap/diag">← Diagnosis queue</a></p><div class="card"><h1>'+c.id+' · '+esc(c.location)+'</h1><p class="small mut">'+esc(c.owner.name)+' · '+esc(c.owner.address)+' · '+esc(c.recurrence)+'</p><p>“'+esc(c.desc||'No description')+'”</p><div class="row">'+(c.photos.length?c.photos.map(function(p,i){return img(p,'Homeowner photo '+(i+1))}).join(''):'<span class="small mut">No homeowner photos</span>')+'</div></div>'+
+ '<div class="card"><h2>Write the report</h2><div class="grid g2"><div><label class="f" for="mo">Moisture reading (%)</label><input class="in" id="mo" inputmode="numeric" value="'+s.moist+'"></div><div><label class="f" for="ar">Area to treat (sq.ft)</label><input class="in" id="ar" inputmode="numeric" value="'+c.area+'"></div></div>'+
+ '<label class="f" for="rc">Root cause</label><textarea class="in" id="rc">'+esc(s.cause)+'</textarea>'+
+ '<label class="f">Recommended system</label><div class="in" style="background:#faf9fc">'+esc(s.name)+'</div><p class="small mut" style="margin-top:6px"><b>Rule used:</b> location = '+esc(c.location)+', history = '+esc(c.recurrence)+' → '+esc(s.why)+'</p>'+
+ '<div class="row" style="margin-top:14px"><button class="btn c" onclick="A.diagSign(\''+id+'\')">Sign &amp; send report</button></div><p class="tiny mut">AI suggested the system from the rules. You confirm it — a person always decides the root cause and the system.</p></div>';
+}
+function qcList(){return liveCases().filter(function(c){return c.partnerId&&stagesDone(c,5)&&!(c.warranty&&c.warranty.status==='Active')})}
+function vQC(){
+ var l=qcList();
+ return '<h1>QC queue</h1><p class="mut">Final checks and flood tests. Only an Asian Paints supervisor can sign these — never the partner.</p>'+
+ (l.length?l.map(function(c){var ready=now()>=c.cureUntil;return '<div class="list-item"><div><div class="row"><b>'+c.id+'</b><span class="chip">'+c.quote.plan+'</span>'+((c.flags||[]).length?'<span class="chip c">Flagged</span>':'')+'</div><div class="small">'+esc(c.location)+' · '+esc(partner(c.partnerId).name)+'</div><div class="small mut">'+(ready?(c.flood&&!c.flood.result?'Flood test running':'Ready for final checks'):'Curing until '+fmt(c.cureUntil))+'</div></div><a class="btn sm" href="#/ap/qc/'+c.id+'">Open</a></div>'}).join(''):'<div class="card mut">Nothing waiting for QC. Jobs appear here after the partner signs stage 5.</div>');
+}
+function vQCItem(id){
+ var c=S.cases[id];if(!c)return '';var p=partner(c.partnerId),t=now();var ess=PLAN[c.quote.plan].flood;
+ var html='<p class="small"><a href="#/ap/qc">← QC queue</a></p><div class="card"><div class="row sp"><div><h1 style="margin:0">'+c.id+' · Final checks</h1><p class="small mut" style="margin:0">'+esc(c.location)+' · '+c.area+' sq.ft · DryProof '+c.quote.plan+' · '+esc(p.name)+' ('+p.tier+')</p></div><span class="chip">Clock: '+fmt(t)+'</span></div></div>';
+ if((c.flags||[]).length)html+='<div class="card bad"><b>AI flag:</b> '+c.flags.map(function(f){return esc(f.text)}).join('<br>')+'<p class="small" style="margin:6px 0 0">Look at these stages closely before signing. You decide — the flag does not.</p></div>';
+ html+='<div class="card"><h2>Stage photos</h2><div class="grid g3">'+c.stages.slice(0,5).map(function(s,i){return '<div><img class="illus" src="'+s.photo+'" alt="'+STAGES[i]+'" style="aspect-ratio:16/10;object-fit:cover"><div class="small"><b>'+STAGES[i]+'</b></div><div class="tiny mut">'+fmt(s.at)+' · '+esc(s.gps||'')+'</div></div>'}).join('')+'</div></div>';
+ html+='<div class="card"><h2>'+(ess?'Final QC + 48-hour flood test':'Final QC')+'</h2>';
+ if(t<c.cureUntil){html+='<p>Coat 2 is curing. Checks open at <b>'+fmt(c.cureUntil)+'</b> ('+dur(c.cureUntil-t)+' left).</p><p class="small mut">Demo: use the Demo panel → Fast-forward 72 h.</p>'}
+ else if(ess){
+  if(!c.flood){html+='<p>Cure complete. Start the flood test: fill the terrace and hold the water for 48 hours.</p><div class="row"><button class="btn" onclick="A.floodStart(\''+id+'\')">Start flood test</button><button class="btn o" onclick="A.floodDecline(\''+id+'\')">Customer declined flood test</button></div>'}
+  else if(!c.flood.result){var end=c.flood.start+48*HR;
+   if(t<end)html+='<p>Flood test running since '+fmt(c.flood.start)+'. Result can be recorded after <b>'+fmt(end)+'</b> ('+dur(end-t)+' left).</p><p class="small mut">Demo: Demo panel → Fast-forward 48 h.</p>';
+   else html+='<p>48 hours complete. Check the ceiling below and record the result.</p>'+qcPhotoRow(id)+'<div class="row" style="margin-top:10px"><button class="btn g" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',true)">Pass — sign final QC</button><button class="btn c" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',false)">Fail — send back for redo</button></div>'}
+ } else {html+='<p>Cure complete. Inspect coat thickness, joints and drains.</p>'+qcPhotoRow(id)+'<div class="row" style="margin-top:10px"><button class="btn g" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',true)">Pass — sign final QC</button><button class="btn c" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',false)">Fail — send back for redo</button></div>'}
+ html+='<hr><p class="small"><b>Warranty rules (applied automatically):</b><br>All stages + flood test passed (Essential) → 10 years · All stages + final QC (Basic) → 5 years · Essential, customer declined flood test → 5 years · Any stage missing or failed → on hold, crew redoes it at no cost to the customer.</p></div>';
+ return html;
+}
+function qcPh(id){return D.qc&&D.qc[id]}
+function qcPhotoRow(id){var ph=qcPh(id);return '<div class="row">'+(ph?img(ph,'QC photo'):'')+'<label class="btn o sm" style="cursor:pointer">📷 '+(ph?'Retake':'Take QC photo')+'<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.qcPhoto(\''+id+'\',this)"></label>'+(S.allowSample?'<button class="btn o sm" onclick="A.qcSample(\''+id+'\')">Use sample photo</button>':'')+'</div>'}
+function vClaims(){
+ var l=Object.values(S.claims).sort(function(a,b){return (a.status==='Closed')-(b.status==='Closed')||a.raisedAt-b.raisedAt});
+ return '<h1>Complaints queue</h1><p class="mut">An Asian Paints engineer decides the cause — never the partner. Visit within 48 hrs.</p>'+
+ '<div class="card"><div class="tw"><table><thead><tr><th>Complaint</th><th>Job</th><th>Age</th><th>Status</th><th></th></tr></thead><tbody>'+l.map(function(k){var c=S.cases[k.caseId];var age=now()-k.raisedAt;var late=!k.visitAt&&k.status!=='Closed'&&age>40*HR;return '<tr><td><b>'+k.id+'</b>'+(k.sample?' <span class="chip k">sample</span>':'')+'<div class="tiny mut">'+esc(k.severity)+'</div></td><td>'+(c?c.id+' · '+esc(c.city):esc(k.projectName+' · '+k.flat))+'</td><td>'+dur(age)+'</td><td>'+(k.status==='Closed'?'<span class="chip g">Closed</span>':k.cause?'<span class="chip">'+esc(k.cause)+(k.fixedAt?' · fixed':'')+'</span>':k.visitAt?'<span class="chip a">Visited</span>':'<span class="chip '+(late?'c':'a')+'">Visit due '+fmt(k.raisedAt+48*HR)+'</span>')+' '+escalation(k)+'</td><td><a class="btn sm" href="#/ap/claims/'+k.id+'">Open</a></td></tr>'}).join('')+'</tbody></table></div></div>';
+}
+function vClaim(id){
+ var k=S.claims[id];if(!k)return '';var c=S.cases[k.caseId];
+ var html='<p class="small"><a href="#/ap/claims">← Complaints queue</a></p><div class="card"><div class="row sp"><div><h1 style="margin:0">'+k.id+'</h1><p class="small mut" style="margin:0">Raised '+fmt(k.raisedAt)+' · '+esc(k.where||'')+' · '+esc(k.severity)+'</p></div>'+escalation(k)+'</div><p style="margin-top:10px">“'+esc(k.desc)+'”</p>'+(k.photo?img(k.photo,'Complaint photo'):'')+'</div>';
+ if(c)html+='<div class="card soft"><h2>Linked job record</h2><p class="small">'+c.id+' · '+esc(c.location)+' · DryProof '+(c.quote?c.quote.plan:'')+' · '+esc(partner(c.partnerId)?partner(c.partnerId).name:'')+' · plaque '+esc(c.plaque||'')+'</p><div class="row">'+c.stages.filter(function(s){return s.status==='Done'}).map(function(s){return img(s.photo,STAGES[s.n-1])}).join('')+'</div><p class="small">Flood test: '+(c.flood?esc(c.flood.result||'running'):'not in plan')+' · Final QC: '+esc(c.qc?c.qc.by:'—')+'</p></div>';
+ else html+='<div class="card soft"><h2>Linked handover record</h2><p class="small">'+esc(k.projectName)+' · '+esc(k.flat)+' · all 6 stages verified · flood test passed</p></div>';
+ html+='<div class="card"><h2>Engineer actions</h2>';
+ if(k.status==='Closed')html+='<p><span class="chip g">Closed '+fmt(k.closedAt)+'</span> · '+esc(k.cause)+' — '+esc(k.reason)+'</p>';
+ else if(!k.visitAt)html+='<p>Visit due before <b>'+fmt(k.raisedAt+48*HR)+'</b>.</p><button class="btn" onclick="A.visit(\''+id+'\')">Record site visit</button>';
+ else if(!k.cause)html+='<p class="small">Visited '+fmt(k.visitAt)+'. Decide the cause.</p><label class="f">Cause</label><div class="opts">'+['Workmanship','Material','Outside job scope'].map(function(x){return '<button class="opt '+(D.cause===x?'on':'')+'" onclick="D.cause=\''+x+'\';A.r()">'+x+'</button>'}).join('')+'</div><p class="tiny mut">Workmanship → partner fixes at own cost (from holdback) · Material → Asian Paints pays · Outside scope → customer told why, in writing with photos.</p><label class="f" for="rs">Written reason (shown to the customer)</label><textarea class="in" id="rs"></textarea><div class="row" style="margin-top:12px"><button class="btn c" onclick="A.decide(\''+id+'\')">Save decision</button></div>';
+ else if(k.cause==='Material'&&!k.fixedAt)html+='<p>Decision: Material. Schedule the AP fix.</p><button class="btn g" onclick="A.apFix(\''+id+'\')">Mark AP fix done</button>';
+ else if(k.cause==='Workmanship'&&!k.fixedAt)html+='<p>Decision: Workmanship. Waiting for the partner to upload the fix.</p>';
+ else if(k.projectId&&k.cause==='Workmanship'&&!k.fixedAt)html+='';
+ else html+='<p>Decision: '+esc(k.cause)+'. Waiting for the customer to confirm.</p><p class="small">'+esc(k.reason)+'</p>';
+ return html+'</div>';
+}
+function vAPCase(id){
+ var c=S.cases[id];if(!c)return '<div class="card">Not found</div>';var p=partner(c.partnerId);
+ return '<p class="small"><a href="#/ap/tower">← Control Tower</a></p><div class="card"><div class="row sp"><h1 style="margin:0">'+c.id+(c.sample?' <span class="chip k">sample</span>':'')+'</h1>'+chipFor(c)+'</div><p class="small mut">'+esc(c.location)+' · '+esc(c.city)+' · '+(p?esc(p.name)+' ('+p.tier+')':'no partner yet')+'</p>'+phaseBar(c)+'</div>'+
+ ((c.flags||[]).length?'<div class="card bad"><b>Flags</b><br>'+c.flags.map(function(f){return esc(f.text)}).join('<br>')+'</div>':'')+
+ '<div class="card"><h2>Stages</h2><ul class="stages">'+c.stages.map(function(s,i){return '<li class="stg"><span class="dot '+(s.status==='Done'?'done':'')+'">'+(s.status==='Done'?'✓':s.n)+'</span><div style="flex:1"><b>'+STAGES[i]+'</b><div class="small mut">'+(s.status==='Done'?fmt(s.at)+' · '+esc(s.by||''):s.status)+'</div></div>'+(s.status==='Done'&&s.photo?img(s.photo,STAGES[i]):'')+'</li>'}).join('')+'</ul></div>'+
+ '<div class="card"><h2>Audit trail</h2>'+((c.log||[]).length?'<table>'+c.log.slice().reverse().map(function(l){return '<tr><td class="small">'+fmt(l.at)+'</td><td class="small">'+esc(l.who)+'</td><td class="small">'+esc(l.what)+'</td></tr>'}).join('')+'</table>':'<p class="mut small">No entries.</p>')+'</div>';
+}
+function pct(a,b){return b?Math.round(a/b*1000)/10:0}
+function vTower(){
+ var cs=Object.values(S.cases),t=now();
+ var byPhase=[0,0,0,0,0];cs.forEach(function(c){byPhase[phaseIdx(c)]++});
+ var qcd=cs.filter(function(c){return c.qc}),ftr=qcd.filter(function(c){return c.firstTimeRight}).length;
+ var qcPass=qcd.filter(function(c){return c.qc.pass}).length;
+ var fl=cs.filter(function(c){return c.flood&&c.flood.result&&c.flood.result!=='Declined'}),flp=fl.filter(function(c){return c.flood.result==='Pass'}).length;
+ var mon=cs.filter(function(c){return c.monsoonDry!==null&&c.monsoonDry!==undefined}),dry=mon.filter(function(c){return c.monsoonDry}).length;
+ var cl=Object.values(S.claims),open=cl.filter(function(k){return k.status!=='Closed'}).length,visited=cl.filter(function(k){return k.visitAt}),in48=visited.filter(function(k){return k.visitAt-k.raisedAt<=48*HR}).length;
+ var active=cs.filter(function(c){return c.warranty&&c.warranty.status==='Active'}).length;
+ var cities=['Pune','Mumbai','Nashik'];
+ var flags=allFlags();
+ var kpis=[['Live jobs',cs.length-byPhase[4]+' <span style="font-size:.8rem;color:var(--m)">in progress</span>'],['First-time-right',pct(ftr,qcd.length)+'%'],['QC pass',pct(qcPass,qcd.length)+'%'],['Flood-test pass',pct(flp,fl.length)+'%'],['Dry after monsoon',pct(dry,mon.length)+'%'],['Open complaints',open],['Visited within 48 hrs',pct(in48,visited.length)+'%'],['Warranty claim rate (12 mo)',pct(cl.length+(S.netClaims12m||0),active+(S.netWarranties||0))+'%']];
+ var partnersRows=Object.values(S.partners).map(function(p){var jobs=cs.filter(function(c){return c.partnerId===p.id});var area=jobs.reduce(function(s,c){return s+c.area},0);var comp=cl.filter(function(k){var c=S.cases[k.caseId];return c&&c.partnerId===p.id}).length;return '<tr><td><b>'+esc(p.name)+'</b><div class="tiny mut">'+p.city+'</div></td><td>'+p.tier+'</td><td><span class="chip '+(p.ftr<95?'c':'g')+'">'+p.ftr.toFixed(1)+'%</span></td><td>'+p.rating+'</td><td>'+(area?(comp/area*1000).toFixed(2):'0.00')+'</td></tr>'}).join('');
+ return '<div class="row sp"><div><h1 style="margin:0">Control Tower</h1><p class="mut" style="margin:0">Pune region · live from every job record · includes sample network data</p></div><span class="chip">Clock: '+fmt(t)+'</span></div>'+
+ '<div class="grid g4" style="margin:14px 0">'+kpis.map(function(k){return '<div class="kpi"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>'}).join('')+'</div>'+
+ '<div class="grid g2"><div class="card"><h2>AI flags early</h2>'+(flags.length?flags.map(function(f){var href=f.caseId?'#/ap/case/'+f.caseId:f.claimId?'#/ap/claims/'+f.claimId:'';return '<div class="flag '+f.sev+'"><div class="row sp"><b class="small">'+esc(f.title)+'</b>'+(href?'<a class="btn o sm" href="'+href+'">Review</a>':'')+'</div><div class="small mut">'+esc(f.body)+'</div><div class="tiny"><b>Suggested:</b> '+esc(f.action)+'</div></div>'}).join(''):'<p class="mut">No flags.</p>')+'<p class="tiny mut">AI flags, an AP manager decides.</p></div>'+
+ '<div><div class="card"><h2>Jobs by stage</h2>'+PHASES.map(function(n,i){var mx=Math.max.apply(null,byPhase)||1;return '<div style="margin-bottom:8px"><div class="row sp small"><span>'+n+'</span><b>'+byPhase[i]+'</b></div><div class="bar"><div style="width:'+(byPhase[i]/mx*100)+'%"></div></div></div>'}).join('')+'</div>'+
+ '<div class="card"><h2>Jobs by city</h2><div class="tw"><table><thead><tr><th>City</th>'+PHASES.map(function(p){return '<th>'+p+'</th>'}).join('')+'</tr></thead><tbody>'+cities.map(function(city){return '<tr><td><b>'+city+'</b></td>'+PHASES.map(function(_,i){return '<td>'+cs.filter(function(c){return c.city===city&&phaseIdx(c)===i}).length+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div></div></div></div>'+
+ '<div class="card"><h2>Pre-monsoon bookings vs crew capacity (April)</h2>'+cities.map(function(city){var cap=S.network[city]*4,b=S.aprilBookings[city],mx=Math.max(cap,b);return '<div style="margin-bottom:10px"><div class="row sp small"><b>'+city+'</b><span>'+b+' bookings · capacity '+cap+'</span></div><div class="bar '+(b>cap?'c':'')+'"><div style="width:'+(b/mx*100)+'%"></div></div></div>'}).join('')+'<p class="tiny mut">Capacity = certified crews × 4 jobs a month.</p></div>'+
+ '<div class="card"><h2>Partner scorecards</h2><div class="tw"><table><thead><tr><th>Partner</th><th>Tier</th><th>First-time-right</th><th>Rating</th><th>Complaints / 1,000 sq.ft</th></tr></thead><tbody>'+partnersRows+'</tbody></table></div></div>';
+}
+
+/* ================= DEMO PANEL ================= */
+function isDemo(){return S.demo||/[?&]demo=1/.test(location.search)||/demo=1/.test(location.hash)}
+function renderDemo(){
+ var old=document.getElementById('demo-root');if(old)old.remove();
+ if(!isDemo())return;
+ var d=document.createElement('div');d.id='demo-root';
+ var html='<button class="demo-btn noprint" onclick="A.demoToggle()" aria-expanded="'+(!!S.demoOpen)+'">Demo</button>';
+ if(S.demoOpen){html+='<div class="demo noprint" role="region" aria-label="Demo panel"><div class="row sp"><b>Demo panel</b><button onclick="A.demoToggle()" aria-label="Close">✕</button></div><div class="tiny" style="opacity:.75">Clock: '+fmt(now())+(S.clockMin?' (+'+dur(S.clockMin*MIN)+')':'')+'</div>'+
+  '<h4>Switch role</h4><button onclick="A.as(\'h\')">Homeowner</button><button onclick="A.as(\'p\',\'P-8821\')">Partner · Ramesh</button><button onclick="A.as(\'p\',\'P-7710\')">Partner · Shinde</button><button onclick="A.as(\'b\')">Builder</button><button onclick="A.as(\'ap\',null,\'#/ap/qc\')">AP · QC</button><button onclick="A.as(\'ap\',null,\'#/ap/claims\')">AP · Complaints</button><button onclick="A.as(\'ap\',null,\'#/ap/diag\')">AP · Diagnosis</button><button onclick="A.as(\'ap\',null,\'#/ap/tower\')">AP · Control Tower</button>'+
+  '<h4>Fast-forward clock</h4><button onclick="A.ff(2*60)">+2 h</button><button onclick="A.ff(48*60)">+48 h</button><button onclick="A.ff(72*60)">+72 h</button><button onclick="A.ff(7*24*60)">+7 days</button><button onclick="A.ff(-S.clockMin)">Real time</button>'+
+  '<h4>Photos</h4><button onclick="S.allowSample=!S.allowSample;save();render()">'+(S.allowSample?'✓ Sample photos allowed':'Allow sample photos')+'</button>'+
+  '<h4>Data</h4><button onclick="A.reset()">Reset demo</button><button onclick="S.demo=false;S.demoOpen=false;save();render()">Hide demo button</button></div>'}
+ d.innerHTML=html;document.body.appendChild(d);
+}
+
+/* ================= ACTIONS ================= */
+var A=window.A={
+ r:function(){render()},
+ zoom:function(src,alt){modal('<img src="'+src+'" alt="'+esc(alt)+'" style="width:100%;border-radius:10px"><p class="small">'+esc(alt)+'</p><button class="btn" onclick="A.close()">Close</button>')},
+ close:closeModal,
+ login:function(k){go('#/login/'+k)},
+ doLogin:function(k){S.session={role:k};if(k==='p'){var el=document.getElementById('pid');S.session.pid=el?el.value:'P-8821'}save();go({h:'#/h',p:'#/p',b:'#/b',ap:'#/ap/tower'}[k])},
+ logout:function(){S.session={};save();go('#/')},
+ as:function(k,pid,dest){S.session={role:k,pid:pid||'P-8821'};save();go(dest||{h:'#/h',p:'#/p',b:'#/b',ap:'#/ap/tower'}[k])},
+ verify:function(v){v=(v||'').trim().toUpperCase();if(!v){toast('Enter the plaque ID');return}go('#/verify/'+v)},
+ reset:function(){if(!confirm('Reset all demo data to the starting point?'))return;var keep={demo:S.demo};localStorage.removeItem(KEY);D={};seed();S.demo=keep.demo;save();toast('Demo reset');go('#/')},
+ demoToggle:function(){S.demoOpen=!S.demoOpen;save();renderDemo()},
+ ff:function(m){S.clockMin=(S.clockMin||0)+m;save();render();toast(m>0?'Clock moved forward '+dur(m*MIN):'Clock back to real time')},
+ // report
+ rset:function(k,v){D.r[k]=v;D.r.err='';render()},
+ voice:function(){toast('Voice input in your language is coming with the pilot. Please type for now.')},
+ addPhoto:function(inp){var f=inp.files&&inp.files[0];if(!f)return;resizeFile(f,function(d){D.r.photos.push(d);render()})},
+ samplePhoto:function(){D.r.photos.push(LOC_ILL[D.r.location]||ILL.crack);render()},
+ rmPhoto:function(i){D.r.photos.splice(i,1);render()},
+ rnext:function(){var r=D.r;var el=document.getElementById('desc');if(el)r.desc=el.value;if(!r.location){r.err='Choose where the leak is.';return render()}if(!r.recurrence){r.err='Tell us if it has happened before.';return render()}if(r.desc.trim().length<5){r.err='Add a short description.';return render()}r.step=2;r.err='';render();window.scrollTo(0,0)},
+ rbook:function(){var r=D.r;if(!r.name.trim()||!/^\d{10}$/.test(r.phone)){r.err='Enter your name and a 10-digit mobile number.';return render()}if(!/^\d{6}$/.test(r.pincode)){r.err='Enter a 6-digit pincode.';return render()}if(!r.day){r.err='Choose a day.';return render()}if(!r.win){r.err='Choose a time window.';return render()}
+  var id='CASE-'+(S.seq++);var city=/^40/.test(r.pincode)?'Mumbai':/^42/.test(r.pincode)?'Nashik':'Pune';
+  var c=mkCase({id:id,ownerKey:'H1',owner:{name:r.name,address:r.address,pincode:r.pincode,phone:r.phone},city:city,location:r.location,recurrence:r.recurrence,desc:r.desc,photos:r.photos,createdAt:now(),priority:r.priority,visit:{at:r.day,window:r.win,expert:PEOPLE.diag}});
+  log(c,'Homeowner','Leak reported ('+r.location+', '+r.recurrence+')');log(c,'System','Diagnosis visit booked — '+fmtD(r.day)+', '+r.win);
+  S.cases[id]=c;save();D.r={_new:true};go('#/h/done/'+id)},
+ second:function(id){var c=S.cases[id];c.second={status:'Requested',expert:PEOPLE.second,requestedAt:now(),visitAt:nextDays(1)[0]};log(c,'Homeowner','Free second opinion requested');save();toast('Second opinion booked with '+PEOPLE.second);render()},
+ pickPlan:function(id,pl){D.plan=D.plan||{};D.plan[id]=pl;render()},
+ accept:function(id){var c=S.cases[id];var pl=(D.plan&&D.plan[id])||'Essential';c.quote={plan:pl,price:PLAN[pl].rate*c.audit.area,acceptedAt:now()};c.area=c.audit.area;
+  var p=matchPartner(c);log(c,'Homeowner','DryProof '+pl+' accepted');
+  if(p){c.partnerId=p.id;c.stages[0].status='Open';log(c,'System','Matched to '+p.name+' ('+p.tier+')');toast('Accepted. Your partner is '+p.name+'.')}else{c.reassignPending=true;toast('Accepted. Asian Paints will confirm your partner within 24 hours.')}
+  save();render()},
+ reassign:function(id){modal('<h2>Request a different partner</h2><label class="f" for="rr">Reason</label><select class="in" id="rr"><option>Dates do not suit me</option><option>I had a bad experience before</option><option>I prefer a partner closer to me</option><option>Other</option></select><div class="row" style="margin-top:14px"><button class="btn c" onclick="A.doReassign(\''+id+'\')">Request</button><button class="btn o" onclick="A.close()">Cancel</button></div>')},
+ doReassign:function(id){var c=S.cases[id];var reason=document.getElementById('rr').value;c.excluded.push(c.partnerId);var old=partner(c.partnerId);var p=matchPartner(c);
+  if(p){c.partnerId=p.id;log(c,'Homeowner','Partner change requested ('+reason+') — '+old.name+' → '+p.name);toast('New partner: '+p.name)}else{c.partnerId=null;c.reassignPending=true;c.stages[0].status='Locked';log(c,'Homeowner','Partner change requested ('+reason+')');toast('Request sent. Asian Paints will confirm a new partner within 24 hours.')}
+  closeModal();save();render()},
+ raise:function(id){var f=D.cf;var el=document.getElementById('cd');if(el)f.desc=el.value;if(!f.severity){f.err='Choose how bad it is.';return render()}if(f.desc.trim().length<5){f.err='Describe the problem.';return render()}
+  var kid='CL-'+(S.claimSeq++);S.claims[kid]={id:kid,caseId:id,raisedAt:now(),where:f.where,noticed:f.noticed,severity:f.severity,desc:f.desc,photo:f.photo,status:'Linked',visitAt:null,cause:null,reason:''};
+  log(S.cases[id],'Homeowner','Complaint '+kid+' raised');save();D.cf=null;go('#/h/case/'+id);setTimeout(function(){var e=document.getElementById(kid);if(e)e.scrollIntoView({behavior:'smooth',block:'center'})},60);toast('Complaint '+kid+' raised. Visit before '+fmt(now()+48*HR)+'.')},
+ cfPhoto:function(inp){var f=inp.files&&inp.files[0];if(!f)return;resizeFile(f,function(d){D.cf.photo=d;render()})},
+ confirmFix:function(kid){var k=S.claims[kid];k.status='Closed';k.closedAt=now();var c=S.cases[k.caseId];if(c)log(c,'Homeowner','Complaint '+kid+' closed');save();toast('Thanks — complaint closed.');render()},
+ ask:function(q){q=(q||'').trim();if(!q)return;var cs=myCases();var cid=(D.askCase&&S.cases[D.askCase])?D.askCase:(cs[0]&&cs[0].id);if(!cid)return;S.chat.push({f:'u',t:q});S.chat.push({f:'b',t:answer(q,S.cases[cid])});save();render();var ch=document.getElementById('chat');if(ch)ch.scrollTop=ch.scrollHeight},
+ join:function(){S.circle.joined=true;save();toast('Welcome to DryProof Circle');render()},
+ remind:function(){S.circle.reminder=document.getElementById('rm').value;save();toast('We will remind you in '+S.circle.reminder);render()},
+ askCircle:function(q){q=(q||'').trim();if(q.length<5){toast('Type your question');return}S.circle.questions.unshift({q:q,by:'You',a:null});S.circle.joined=true;save();toast('Posted. An expert usually answers within a day.');render()},
+ // partner
+ stagePhoto:function(cid,i,inp){var f=inp.files&&inp.files[0];if(!f)return;resizeFile(f,function(d){D.sp=D.sp||{};D.sp[cid+'-'+i]=d;render()})},
+ stageSample:function(cid,i){D.sp=D.sp||{};D.sp[cid+'-'+i]=STAGE_ILL[i];render()},
+ signStage:function(cid,i){var c=S.cases[cid],ph=D.sp&&D.sp[cid+'-'+i];if(!ph){toast('Take a photo first');return}
+  var prev=null;for(var j=i-1;j>=0;j--){if(c.stages[j].status==='Done'){prev=c.stages[j];break}}
+  var t=now();
+  if(prev&&t-prev.at<30*MIN){c.flags=c.flags||[];c.flags.push({stage:i+1,at:t,text:STAGES[i]+' signed '+dur(t-prev.at)+' after '+STAGES[i-1]+' (expected several hours).'})}
+  var p=partner(c.partnerId);var redo=c.stages[i].status==='Redo';doStage(c,i,t,p.name,ph);delete D.sp[cid+'-'+i];
+  log(c,p.name,(redo?'Redo signed: ':'Stage signed: ')+STAGES[i]);
+  if(i<4){var nx=c.stages[i+1];if(nx.status!=='Redo')nx.status='Open'}
+  if(i===4){c.cureUntil=t+72*HR;if(c.warranty&&c.warranty.status==='On hold')c.warranty=null;c.flood=null}
+  else if(c.stages[i+1].status==='Redo'){}
+  save();toast(STAGES[i]+' signed off. The homeowner can see it now.');render()},
+ fixPhoto:function(kid,inp){var f=inp.files&&inp.files[0];if(!f)return;resizeFile(f,function(d){D.fix=D.fix||{};D.fix[kid]=d;render()})},
+ fixSample:function(kid){D.fix=D.fix||{};D.fix[kid]=ILL.coat2;render()},
+ fixDone:function(kid){var k=S.claims[kid];k.fixedAt=now();k.fixPhoto=D.fix[kid];var c=S.cases[k.caseId];if(c)log(c,partner(c.partnerId).name,'Complaint fix done for '+kid);save();toast('Fix submitted. The homeowner will confirm.');render()},
+ // AP
+ diagSign:function(id){var c=S.cases[id];var mo=parseInt(document.getElementById('mo').value)||SYS[c.location].moist;var ar=parseInt(document.getElementById('ar').value)||400;var rc=document.getElementById('rc').value.trim()||SYS[c.location].cause;
+  c.audit={by:PEOPLE.diag,at:now(),moist:mo,cause:rc,system:SYS[c.location].name,area:ar,photo:ILL.thermal};c.area=ar;log(c,PEOPLE.diag,'Diagnosis report signed');save();toast('Report sent to the homeowner');go('#/ap/diag')},
+ secondDecide:function(id,ok){var c=S.cases[id];var rv=document.getElementById('rv').value.trim();if(!ok&&rv.length<5){toast('Write the corrected root cause');return}
+  c.second.status=ok?'Confirmed':'Revised';c.second.note=rv;if(!ok)c.audit.cause=rv;c.second.at=now();log(c,PEOPLE.second,ok?'Second opinion: diagnosis confirmed':'Second opinion: diagnosis revised');save();toast('Second opinion saved');go('#/ap/diag')},
+ floodStart:function(id){var c=S.cases[id];c.flood={start:now(),result:null};log(c,PEOPLE.qc,'Flood test started');save();toast('Flood test started — result after 48 hours');render()},
+ floodDecline:function(id){if(!confirm('Record that the customer declined the flood test? The warranty will be 5 years.'))return;var c=S.cases[id];c.flood={start:now(),result:'Declined'};D.qc=D.qc||{};A._qcPass(id,'Customer declined the 48-hour flood test, so the warranty is 5 years instead of 10.');},
+ qcPhoto:function(id,inp){var f=inp.files&&inp.files[0];if(!f)return;resizeFile(f,function(d){D.qc=D.qc||{};D.qc[id]=d;render()})},
+ qcSample:function(id){D.qc=D.qc||{};D.qc[id]=ILL.flood;render()},
+ qcResult:function(id,pass){var c=S.cases[id];
+  if(pass){if(c.flood&&!c.flood.result)c.flood.result='Pass';A._qcPass(id,c.flood?'All 6 stages verified and 48-hour flood test passed.':'All stages verified and final QC passed.')}
+  else{c.qc={pass:false,by:PEOPLE.qc,at:now()};c.firstTimeRight=false;c.stages[3].status='Redo';c.stages[4].status='Redo';c.flood=null;c.cureUntil=null;
+   c.warranty={status:'On hold',reason:'Final check failed: the membrane coats (Coat 1 and Coat 2) must be redone before your warranty is issued.'};
+   var p=partner(c.partnerId);p.ftr=Math.max(80,p.ftr-1.2);log(c,PEOPLE.qc,'Final QC failed — Coat 1 and Coat 2 sent back for redo');save();toast('Sent back to the partner for redo');go('#/ap/qc')}},
+ _qcPass:function(id,reason){var c=S.cases[id];var first=!c.qc;var t=now();
+  c.stages[5].status='Done';c.stages[5].at=t;c.stages[5].by=PEOPLE.qc;c.stages[5].photo=(D.qc&&D.qc[id])||ILL.flood;c.stages[5].gps=gpsLabel(c);c.stages[5].hash=hashStr(c.stages[5].photo);
+  var years=PLAN[c.quote.plan].years;if(c.flood&&c.flood.result==='Declined')years=5;
+  c.qc={pass:true,by:PEOPLE.qc,at:t,firstTime:first};c.firstTimeRight=first;
+  c.plaque=c.plaque||('AP-DP-'+cityCode(c.city)+'-'+c.id.replace('CASE-',''));
+  c.warranty={status:'Active',years:years,issuedAt:t,reason:reason};
+  var p=partner(c.partnerId);p.jobs++;
+  log(c,PEOPLE.qc,'Final QC passed — '+years+'-year warranty issued automatically');
+  if(D.qc)delete D.qc[id];save();toast('Signed. '+years+'-year warranty issued and partner payout released.');go('#/ap/qc')},
+ visit:function(id){var k=S.claims[id];k.visitAt=now();save();toast('Visit recorded');render()},
+ decide:function(id){var k=S.claims[id];var rs=document.getElementById('rs').value.trim();if(!D.cause){toast('Choose the cause');return}if(rs.length<5){toast('Write the reason for the customer');return}
+  k.cause=D.cause;k.reason=rs;k.decidedAt=now();D.cause=null;
+  var c=S.cases[k.caseId];var pid=c?c.partnerId:(S.projects[k.projectId]&&S.projects[k.projectId].partnerId);
+  if(k.cause==='Workmanship'&&pid){var p=partner(pid);p.complaints++;p.ftr=Math.max(80,p.ftr-1.5)}
+  if(c)log(c,PEOPLE.claims,'Complaint '+id+' decided: '+k.cause);
+  if(k.projectId&&k.cause!=='Material'){k.fixedAt=k.cause==='Workmanship'?null:k.fixedAt}
+  save();toast('Decision saved and shared with the customer');render()},
+ apFix:function(id){var k=S.claims[id];k.fixedAt=now();save();toast('Marked fixed. Waiting for customer confirmation.');render()},
+ // builder
+ audit:function(){D.auditDone='SA-'+(S.leadSeq++);S.leads.push({id:D.auditDone,project:document.getElementById('ap').value,at:now()});save();render()},
+ bRaise:function(){var b=D.bc;var el=document.getElementById('bd');if(el)b.desc=el.value;if(b.desc.trim().length<5){b.err='Describe the problem.';return render()}
+  var kid='CL-'+(S.claimSeq++);var pr=S.projects['PRJ-201'];S.claims[kid]={id:kid,caseId:null,projectId:pr.id,projectName:pr.name,flat:b.flat,raisedAt:now(),where:'Flat '+b.flat,severity:'Builder complaint',desc:b.desc,photo:null,status:'Linked',visitAt:null,cause:null,reason:''};
+  save();D.bc=null;toast('Complaint '+kid+' raised. Visit within 48 hrs.');render()}
+};
+// builder complaint: workmanship fix by partner — allow AP to mark done for project claims
+var _origClaim=vClaim;
+vClaim=function(id){var k=S.claims[id];var h=_origClaim(id);if(k&&k.projectId&&k.cause==='Workmanship'&&!k.fixedAt&&k.status!=='Closed'){h=h.replace('Waiting for the partner to upload the fix.</p>','Partner crew assigned to fix it at their cost.</p><button class="btn g" onclick="A.apFix(\''+id+'\')">Mark fix verified</button>')}
+ if(k&&k.projectId&&(k.fixedAt||k.cause==='Outside job scope')&&k.status!=='Closed'){h+='<div class="card"><button class="btn o" onclick="A.confirmFix(\''+id+'\')">Builder confirmed — close complaint</button></div>'}
+ return h};
+
+/* expose state for inline handlers */
+Object.defineProperty(window,'S',{get:function(){return S},configurable:true});
+Object.defineProperty(window,'D',{get:function(){return D},configurable:true});
+window.save=save;window.render=render;
+
+/* ================= BOOT ================= */
+load();
+if(/[?&]demo=1/.test(location.search)){S.demo=true;save()}
+if(!location.hash)location.replace('#/');
+render();
+})();
+</script>
+</body>
+</html>
