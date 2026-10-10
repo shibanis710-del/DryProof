@@ -225,7 +225,7 @@ function finishCase(c,t,plan,pid,opts){
 }
 function seed(){
  var t=Date.now();
- S={v:2,clockMin:0,seq:7911,claimSeq:1201,leadSeq:31,session:{},demo:false,allowSample:false,chat:[],
+ S={v:2,clockMin:0,seq:7100+Math.floor(Math.random()*2800),claimSeq:1201,leadSeq:31,session:{},demo:false,allowSample:false,chat:[],
   network:{Pune:9,Mumbai:6,Nashik:3},netWarranties:1240,netClaims12m:31,aprilBookings:{Pune:31,Mumbai:29,Nashik:7},
   partners:{
    'P-8821':{id:'P-8821',name:'Ramesh Kumar & Sons',tier:'Certified Plus',city:'Pune',skills:['Terrace','External wall','Bathroom'],rating:4.8,jobs:142,ftr:97.1,complaints:0,validUntil:t+158*DAY,modules:[['PU membrane systems',100],['Flood testing',100],['Expansion joints',92],['Crack diagnosis',85]]},
@@ -299,6 +299,7 @@ function seed(){
 }
 function load(){try{var raw=localStorage.getItem(KEY);if(raw){S=JSON.parse(raw);if(!S||S.v!==2)S=null}}catch(e){S=null}if(!S)seed()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Browser storage is full — try smaller photos or Reset demo.')}}
+function addYears(ts,y){var d=new Date(ts);d.setFullYear(d.getFullYear()+y);return d.getTime()}
 function now(){return Date.now()+(S.clockMin||0)*MIN}
 
 /* ================= HELPERS ================= */
@@ -441,7 +442,7 @@ function vPassport(id){
  if(!c&&!flat)return '<div class="card"><h1>Warranty passport</h1><p>No DryProof record found for <b>'+esc(id||'')+'</b>. Check the ID on the plaque and try again.</p><a class="btn" href="#/">Home</a></div>';
  if(flat){var pp=partner(prj.partnerId);return '<div class="card"><div class="row sp"><div><span class="chip g">Verified handover record</span><h1 style="margin-top:8px">'+esc(prj.name)+' · '+flat.flat+'</h1><p class="mut">'+esc(prj.location)+' · Plaque '+esc(id)+'</p></div>'+qrSVG(id)+'</div><table><tr><th>Wet-area waterproofing</th><td>All 6 stages verified</td></tr><tr><th>Flood test</th><td>'+flat.flood+'</td></tr><tr><th>Handed over</th><td>'+fmtD(flat.handedAt)+'</td></tr><tr><th>Partner</th><td>'+esc(pp.name)+' · '+pp.tier+'</td></tr><tr><th>Builder</th><td>'+esc(prj.builder)+'</td></tr></table><p class="tiny mut" style="margin-top:12px">Tamper-evident digital record kept by Asian Paints.</p></div>'}
  var p=partner(c.partnerId),w=c.warranty;
- var exp=w?w.issuedAt+w.years*365*DAY:null;
+ var exp=w?addYears(w.issuedAt,w.years):null;
  return '<div class="card"><div class="row sp" style="align-items:flex-start"><div><span class="chip '+(w&&w.status==='Active'?'g':'a')+'">'+(w?(w.status==='Active'?'Warranty active':'Warranty '+w.status.toLowerCase()):'Work in progress')+'</span><h1 style="margin-top:8px">Warranty passport</h1><p class="mut">Plaque '+esc(id)+' · '+esc(c.location)+' · '+esc(c.city)+'</p></div>'+qrSVG(id)+'</div>'+
  '<div class="grid g3"><div class="kpi"><b>'+(w?w.years+' yrs':'—')+'</b><span>Warranty</span></div><div class="kpi"><b style="font-size:1.05rem">'+(exp?fmtD(exp):'—')+'</b><span>Valid until</span></div><div class="kpi"><b style="font-size:1.05rem">'+(c.flood?esc(c.flood.result||'Running'):'Not part of plan')+'</b><span>48-hour flood test</span></div></div>'+
  '<h3 style="margin-top:18px">Work record</h3><ul class="stages">'+c.stages.map(function(s,i){return '<li class="stg"><span class="dot '+(s.status==='Done'?'done':'')+'">'+(s.status==='Done'?'✓':s.n)+'</span><div style="flex:1"><b>'+STAGES[i]+(i===5&&!PLAN[c.quote.plan].flood?' (final QC)':'')+'</b><div class="small mut">'+(s.status==='Done'?fmt(s.at)+' · '+esc(s.by||'')+' · '+esc(s.gps||''):'Pending')+'</div></div>'+(s.photo&&s.status==='Done'?img(s.photo,STAGES[i]+' photo'):'')+'</li>'}).join('')+'</ul>'+
@@ -467,7 +468,7 @@ function vReport(q){
   '<label class="f">'+L.where+'</label><div class="opts">'+LOCS.map(function(l){return '<button class="opt '+(r.location===l?'on':'')+'" onclick="A.rset(\'location\',\''+l+'\')">'+L[l]+'</button>'}).join('')+'</div>'+
   '<label class="f">'+L.how+'</label><div class="opts">'+[['First time',L.first],['Recurring (2+ times)',L.recurring],['Active leak right now',L.active]].map(function(o){return '<button class="opt '+(r.recurrence===o[0]?'on':'')+'" onclick="A.rset(\'recurrence\',\''+o[0]+'\')">'+o[1]+'</button>'}).join('')+'</div>'+
   (r.recurrence&&r.recurrence!=='First time'?'<p class="chip c" style="margin-top:8px">'+(r.recurrence==='Active leak right now'?'Active leak — we will offer the earliest slot':'Recurring — flagged for priority diagnosis')+'</p>':'')+
-  '<label class="f" for="desc">'+L.desc+'</label><textarea class="in" id="desc" maxlength="500" oninput="D.r.desc=this.value;document.getElementById(\'cc\').textContent=this.value.length+\'/500\'">'+esc(r.desc)+'</textarea><div class="tiny mut" id="cc">'+r.desc.length+'/500</div>'+
+  '<label class="f" for="desc">'+L.desc+'</label><textarea class="in" id="desc" maxlength="500" oninput="if(this.value.length>500)this.value=this.value.slice(0,500);D.r.desc=this.value;document.getElementById(\'cc\').textContent=this.value.length+\'/500\'">'+esc(r.desc)+'</textarea><div class="tiny mut" id="cc">'+r.desc.length+'/500</div>'+
   '<div class="row"><button class="btn o sm" onclick="A.voice()" title="Voice input">🎙 Speak instead</button></div>'+
   '<label class="f">'+L.photos+'</label><div class="row">'+r.photos.map(function(ph,i){return '<span style="position:relative">'+img(ph,'Your photo '+(i+1))+'<button class="btn sm o" style="position:absolute;top:-8px;right:-8px;padding:0 6px" aria-label="Remove photo" onclick="A.rmPhoto('+i+')">×</button></span>'}).join('')+
   '<label class="btn o sm" style="cursor:pointer">+ Add photo<input type="file" accept="image/*" capture="environment" class="sr" onchange="A.addPhoto(this)"></label>'+'<button class="btn o sm" onclick="A.samplePhoto()">Use sample photo</button></div>'+
@@ -506,7 +507,7 @@ function vCase(id){
   '<div class="row" style="margin-top:8px"><button class="btn c" '+(blocked?'disabled':'')+' onclick="A.accept(\''+c.id+'\')">Accept DryProof '+sel+' · '+inr(PLAN[sel].rate*c.audit.area)+'</button></div><p class="tiny mut">No advance payment. You pay in two parts: after the work starts and after final checks pass.</p></div>';
  }
  if(c.quote&&c.quote.acceptedAt){
-  body+='<div class="card"><div class="row sp"><h2 style="margin:0">Your plan</h2><span class="chip g">Accepted '+fmtD(c.quote.acceptedAt)+'</span></div><p>DryProof '+c.quote.plan+' · '+inr(c.quote.price)+' (GST extra) · '+PLAN[c.quote.plan].years+'-year warranty</p></div>';
+  body+='<div class="card"><div class="row sp"><h2 style="margin:0">Your plan</h2><span class="chip g">Accepted '+fmtD(c.quote.acceptedAt)+'</span></div><p>DryProof '+c.quote.plan+' · '+inr(c.quote.price)+' (GST extra) · '+(c.warranty&&c.warranty.status==='Active'&&c.warranty.years!==PLAN[c.quote.plan].years?c.warranty.years+'-year warranty (flood test declined)':PLAN[c.quote.plan].years+'-year warranty')+'</p></div>';
   if(c.reassignPending&&!p)body+='<div class="card warn"><b>Reassignment pending.</b> Asian Paints will confirm a new partner within 24 hours.</div>';
   if(p)body+='<div class="card"><div class="row sp"><h2 style="margin:0">Your partner</h2>'+(pi===2&&c.stages[0].status!=='Done'?'<button class="btn o sm" onclick="A.reassign(\''+c.id+'\')">Request a different partner</button>':'')+'</div><div class="row" style="margin-top:8px"><div class="ic" style="width:44px;height:44px;border-radius:12px;background:var(--pl);display:grid;place-items:center;font-weight:800;color:var(--p)">'+p.name.charAt(0)+'</div><div><b>'+esc(p.name)+'</b> <span class="chip">'+p.tier+'</span><div class="small mut">First-time-right '+p.ftr.toFixed(1)+'% · Rating '+p.rating+' · '+p.jobs+' jobs · Valid until '+fmtD(p.validUntil)+'</div></div></div></div>';
  }
@@ -520,7 +521,7 @@ function vCase(id){
  if(c.warranty&&c.warranty.status==='On hold'){body+='<div class="card warn"><h2>Warranty on hold</h2><p>'+esc(c.warranty.reason)+'</p><p class="small">The crew redoes this at no extra cost to you. Your warranty is issued as soon as it passes.</p></div>'}
  // Assure
  if(pi===4){
-  var w=c.warranty,exp=w.issuedAt+w.years*365*DAY;
+  var w=c.warranty,exp=addYears(w.issuedAt,w.years);
   body+='<div class="cert" style="margin-bottom:16px"><div class="seal">'+qrSVG(c.plaque)+'</div><span class="chip g">Active</span><h2 style="margin-top:8px">'+w.years+'-year DryProof warranty</h2><p>'+esc(c.location)+' · '+esc(c.owner.address)+'</p><table style="max-width:560px"><tr><th>Issued</th><td>'+fmtD(w.issuedAt)+'</td></tr><tr><th>Valid until</th><td>'+fmtD(exp)+'</td></tr><tr><th>Partner</th><td>'+esc(p.name)+' · '+p.tier+'</td></tr><tr><th>Final check</th><td>'+esc(c.qc.by)+'</td></tr><tr><th>Plaque</th><td>'+esc(c.plaque)+'</td></tr></table>'+
   '<details style="margin-top:10px"><summary>How this warranty was decided</summary><ul class="small"><li>✓ All 6 stages on record with on-site photos</li><li>✓ Final QC signed by an Asian Paints supervisor, not the partner</li><li>'+(c.flood?(c.flood.result==='Pass'?'✓ 48-hour flood test passed':'• Flood test declined by customer — warranty set to 5 years'):'• Flood test not part of DryProof Basic')+'</li><li>The record decides the warranty. Nobody can type it in or override it.</li></ul><p class="tiny">Covered: leaks through the treated area from workmanship or material. Not covered: new structural cracks, damage by others, areas not treated.</p></details>'+
   '<div class="row" style="margin-top:12px"><a class="btn" href="#/verify/'+c.plaque+'">Open warranty passport</a><a class="btn c" href="#/h/case/'+c.id+'/complaint">Raise a complaint</a></div></div>';
@@ -572,7 +573,7 @@ function answer(q,c){
  if(/cover|damp|patch|stain/.test(q)){if(!w||w.status!=='Active')return 'Your warranty starts when the final checks pass. Until then, the partner and Asian Paints are responsible for the work in progress.';return 'Your '+w.years+'-year warranty covers leaks through the treated '+c.location.toLowerCase()+' caused by workmanship or material. It does not cover new structural cracks, damage by others or areas that were not treated. If the patch is near the treated area, raise a complaint — an AP engineer will check it within 48 hrs.'}
  if(/engineer|visit|come|when/.test(q)){if(k&&!k.visitAt&&k.status!=='Closed')return PEOPLE.claims+' will visit for '+k.id+' before '+fmt(k.raisedAt+48*HR)+'.';if(!c.audit&&c.visit)return c.visit.expert+' is coming on '+fmtD(c.visit.at)+', '+c.visit.window+'.';var nx=c.stages.findIndex(function(s){return s.status!=='Done'});if(nx>=0&&p)return p.name+' is working on: '+STAGES[nx]+'.';return 'No visit is scheduled right now.'}
  if(/partner|crew|applicator|who/.test(q)){return p?p.name+' ('+p.tier+') — first-time-right '+p.ftr.toFixed(1)+'%, rating '+p.rating+', '+p.jobs+' jobs.':'A partner is matched when you accept a plan.'}
- if(/warranty|long|year|expire|valid/.test(q)){return w&&w.status==='Active'?'Your warranty is '+w.years+' years, valid until '+fmtD(w.issuedAt+w.years*365*DAY)+'. Plaque '+c.plaque+'.':'Your warranty is issued automatically once all stages are on record and final checks pass.'}
+ if(/warranty|long|year|expire|valid/.test(q)){return w&&w.status==='Active'?'Your warranty is '+w.years+' years, valid until '+fmtD(addYears(w.issuedAt,w.years))+'. Plaque '+c.plaque+'.':'Your warranty is issued automatically once all stages are on record and final checks pass.'}
  return 'I have passed this to an Asian Paints expert. They will reply within 4 business hours.';
 }
 function vCircle(){
@@ -597,7 +598,7 @@ function nextTask(c){
 function vJobs(){
  var p=partner(S.session.pid),jobs=myJobs();
  var fixes=Object.values(S.claims).filter(function(k){var c=S.cases[k.caseId];return c&&c.partnerId===p.id&&k.cause==='Workmanship'&&!k.fixedAt});
- var active=jobs.filter(function(c){return !(c.warranty&&c.warranty.status==='Active')}),done=jobs.filter(function(c){return c.warranty&&c.warranty.status==='Active'});
+ jobs.sort(function(a,b){return ((b.quote&&b.quote.acceptedAt)||0)-((a.quote&&a.quote.acceptedAt)||0)});var active=jobs.filter(function(c){return !(c.warranty&&c.warranty.status==='Active')}),done=jobs.filter(function(c){return c.warranty&&c.warranty.status==='Active'});
  return '<div class="row sp" style="margin-bottom:12px"><div><h1 style="margin:0">My jobs</h1><p class="mut" style="margin:0">'+esc(p.name)+' · <span class="chip">'+p.tier+'</span></p></div></div>'+
  (fixes.length?'<div class="card bad"><h2>Complaint fixes assigned to you</h2>'+fixes.map(function(k){return '<div class="list-item"><div><b>'+k.id+'</b> · '+k.caseId+'<div class="small">'+esc(k.reason)+'</div></div><a class="btn c sm" href="#/p/job/'+k.caseId+'">Open</a></div>'}).join('')+'</div>':'')+
  '<h2>Active</h2>'+(active.length?active.map(jobRow).join(''):'<div class="card mut">No active jobs. New jobs appear here when a homeowner accepts a plan.</div>')+
@@ -727,13 +728,13 @@ function vQCItem(id){
  if((c.flags||[]).length)html+='<div class="card bad"><b>AI flag:</b> '+c.flags.map(function(f){return esc(f.text)}).join('<br>')+'<p class="small" style="margin:6px 0 0">Look at these stages closely before signing. You decide — the flag does not.</p></div>';
  html+='<div class="card"><h2>Stage photos</h2><div class="grid g3">'+c.stages.slice(0,5).map(function(s,i){return '<div><img class="illus" src="'+s.photo+'" alt="'+STAGES[i]+'" style="aspect-ratio:16/10;object-fit:cover"><div class="small"><b>'+STAGES[i]+'</b></div><div class="tiny mut">'+fmt(s.at)+' · '+esc(s.gps||'')+'</div></div>'}).join('')+'</div></div>';
  html+='<div class="card"><h2>'+(ess?'Final QC + 48-hour flood test':'Final QC')+'</h2>';
- if(t<c.cureUntil||(ess&&(!c.flood||(!c.flood.result&&t<c.flood.start+48*HR)))){html+='<p>'+(t<c.cureUntil?'Coat 2 is curing until <b>'+fmt(c.cureUntil)+'</b> ('+dur(c.cureUntil-t)+' left).':'Cure complete.')+(ess?' Then the terrace is flooded and held for 48 hours.':'')+'</p><button class="btn" onclick="A.runChecks(\''+id+'\')">⏩ Demo: skip ahead '+(ess?'72 h cure + 48 h flood test':'72 h cure')+'</button>'+(ess&&t>=c.cureUntil&&!c.flood?' <button class="btn o" onclick="A.floodDecline(\''+id+'\')">Customer declined flood test</button>':'')}
+ if(t<c.cureUntil||(ess&&(!c.flood||(!c.flood.result&&t<c.flood.start+48*HR)))){html+='<p>'+(t<c.cureUntil?'Coat 2 is curing until <b>'+fmt(c.cureUntil)+'</b> ('+dur(c.cureUntil-t)+' left).':'Cure complete.')+(ess?' Then the terrace is flooded and held for 48 hours.':'')+'</p><button class="btn" onclick="A.runChecks(\''+id+'\')">⏩ Demo: skip ahead '+(ess?'72 h cure + 48 h flood test':'72 h cure')+'</button>'+(ess&&!(c.flood&&c.flood.result)?' <button class="btn o" onclick="A.floodDecline(\''+id+'\')">Customer declined flood test</button>':'')}
  else if(false){}
  else if(ess){
   if(!c.flood){html+='<p>Cure complete. Start the flood test: fill the terrace and hold the water for 48 hours.</p><div class="row"><button class="btn" onclick="A.floodStart(\''+id+'\')">Start flood test</button><button class="btn o" onclick="A.floodDecline(\''+id+'\')">Customer declined flood test</button></div>'}
   else if(!c.flood.result){var end=c.flood.start+48*HR;
    if(t<end)html+='<p>Flood test running since '+fmt(c.flood.start)+'. Result can be recorded after <b>'+fmt(end)+'</b> ('+dur(end-t)+' left).</p><p class="small mut">Demo: Demo panel → Fast-forward 48 h.</p>';
-   else html+='<p>48 hours complete. Check the ceiling below and record the result.</p>'+qcPhotoRow(id)+'<div class="row" style="margin-top:10px"><button class="btn g" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',true)">Pass — sign final QC</button><button class="btn c" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',false)">Fail — send back for redo</button></div>'}
+   else html+='<p>48 hours complete. Check the ceiling below and record the result.</p><p class="small mut">Customer refused the flood test? <button class="btn o sm" onclick="A.floodDecline(\''+id+'\')">Customer declined flood test</button></p>'+qcPhotoRow(id)+'<div class="row" style="margin-top:10px"><button class="btn g" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',true)">Pass — sign final QC</button><button class="btn c" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',false)">Fail — send back for redo</button></div>'}
  } else {html+='<p>Cure complete. Inspect coat thickness, joints and drains.</p>'+qcPhotoRow(id)+'<div class="row" style="margin-top:10px"><button class="btn g" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',true)">Pass — sign final QC</button><button class="btn c" '+(qcPh(id)?'':'disabled')+' onclick="A.qcResult(\''+id+'\',false)">Fail — send back for redo</button></div>'}
  html+='<hr><p class="small"><b>Warranty rules (applied automatically):</b><br>All stages + flood test passed (Essential) → 10 years · All stages + final QC (Basic) → 5 years · Essential, customer declined flood test → 5 years · Any stage missing or failed → on hold, crew redoes it at no cost to the customer.</p></div>';
  return html;
